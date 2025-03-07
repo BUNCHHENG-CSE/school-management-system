@@ -14,14 +14,14 @@ const router = createRouter({
                     component: () => import('@/views/Dashboard.vue')
                 },
                 {
-                    path: '/uikit/formlayout',
-                    name: 'formlayout',
-                    component: () => import('@/views/uikit/FormLayout.vue')
+                    path: '/studentregistration/PaidStudent',
+                    name: 'Paid Student',
+                    component: () => import('@/views/studentregisteration/PaidStudent.vue')
                 },
                 {
-                    path: '/uikit/input',
-                    name: 'input',
-                    component: () => import('@/views/uikit/InputDoc.vue')
+                    path: '/studentregistration/ScholarshipStudent',
+                    name: 'Scholarship Student',
+                    component: () => import('@/views/studentregisteration/ScholarshipStudent.vue')
                 },
                 {
                     path: '/uikit/button',

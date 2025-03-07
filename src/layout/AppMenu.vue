@@ -11,8 +11,8 @@ const model = ref([
             {
                 label: 'Student Registeration',
                 items: [
-                    { label: 'Paid', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
-                    { label: 'Scholarship', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' }
+                    { label: 'Paid', icon: 'pi pi-fw pi-id-card', to: '/studentregistration/PaidStudent' },
+                    { label: 'Scholarship', icon: 'pi pi-fw pi-check-square', to: '/studentregistration/ScholarshipStudent' }
                 ]
             },
             {
