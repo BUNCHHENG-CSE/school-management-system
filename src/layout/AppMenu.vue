@@ -1,68 +1,76 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
-import AppMenuItem from './AppMenuItem.vue';
+import AppMenuItem from "./AppMenuItem.vue";
 
 const model = ref([
     {
-        label: 'Home',
+        label: "Home",
         items: [
-            { label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+            { label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" },
             {
-                label: 'Student Registeration',
+                label: "Student Registeration",
                 items: [
-                    { label: 'Paid', icon: 'pi pi-fw pi-id-card', to: '/studentregistration/PaidStudent' },
-                    { label: 'Scholarship', icon: 'pi pi-fw pi-check-square', to: '/studentregistration/ScholarshipStudent' }
-                ]
+                    {
+                        label: "Paid",
+                        icon: "pi pFi-fw pi-id-card",
+                        to: "/studentregistration/PaidStudent",
+                    },
+                    {
+                        label: "Scholarship",
+                        icon: "pi pi-fw pi-check-square",
+                        to: "/studentregistration/ScholarshipStudent",
+                    },
+                ],
             },
             {
-                label: 'Study Management',
-                icon: 'pi pi-fw pi-briefcase',
-                to: '/pages',
+                label: "Study Management",
+                icon: "pi pi-fw pi-briefcase",
+                to: "/pages",
                 items: [
                     {
-                        label: 'Landing',
-                        icon: 'pi pi-fw pi-globe',
-                        to: '/landing'
+                        label: "Landing",
+                        icon: "pi pi-fw pi-globe",
+                        to: "/landing",
                     },
                     {
-                        label: 'Auth',
-                        icon: 'pi pi-fw pi-user',
+                        label: "Auth",
+                        icon: "pi pi-fw pi-user",
                         items: [
                             {
-                                label: 'Login',
-                                icon: 'pi pi-fw pi-sign-in',
-                                to: '/auth/login'
+                                label: "Login",
+                                icon: "pi pi-fw pi-sign-in",
+                                to: "/auth/login",
                             },
                             {
-                                label: 'Error',
-                                icon: 'pi pi-fw pi-times-circle',
-                                to: '/auth/error'
+                                label: "Error",
+                                icon: "pi pi-fw pi-times-circle",
+                                to: "/auth/error",
                             },
                             {
-                                label: 'Access Denied',
-                                icon: 'pi pi-fw pi-lock',
-                                to: '/auth/access'
-                            }
-                        ]
+                                label: "Access Denied",
+                                icon: "pi pi-fw pi-lock",
+                                to: "/auth/access",
+                            },
+                        ],
                     },
                     {
-                        label: 'Crud',
-                        icon: 'pi pi-fw pi-pencil',
-                        to: '/pages/crud'
+                        label: "Crud",
+                        icon: "pi pi-fw pi-pencil",
+                        to: "/pages/crud",
                     },
                     {
-                        label: 'Not Found',
-                        icon: 'pi pi-fw pi-exclamation-circle',
-                        to: '/pages/notfound'
+                        label: "Not Found",
+                        icon: "pi pi-fw pi-exclamation-circle",
+                        to: "/pages/notfound",
                     },
                     {
-                        label: 'Empty',
-                        icon: 'pi pi-fw pi-circle-off',
-                        to: '/pages/empty'
-                    }
-                ]
-            }
+                        label: "Empty",
+                        icon: "pi pi-fw pi-circle-off",
+                        to: "/pages/empty",
+                    },
+                ],
+            },
             // {
             //     label: 'Hierarchy',
             //     items: [
@@ -123,15 +131,19 @@ const model = ref([
             //         }
             //     ]
             // }
-        ]
-    }
+        ],
+    },
 ]);
 </script>
 
 <template>
     <ul class="layout-menu">
         <template v-for="(item, i) in model" :key="item">
-            <app-menu-item v-if="!item.separator" :item="item" :index="i"></app-menu-item>
+            <app-menu-item
+                v-if="!item.separator"
+                :item="item"
+                :index="i"
+            ></app-menu-item>
             <li v-if="item.separator" class="menu-separator"></li>
         </template>
     </ul>

@@ -8,6 +8,7 @@ import ConfirmationService from "primevue/confirmationservice";
 import ToastService from "primevue/toastservice";
 
 import "@/assets/styles.scss";
+import "primeicons/primeicons.css";
 
 const app = createApp(App);
 
@@ -24,3 +25,4 @@ app.use(ToastService);
 app.use(ConfirmationService);
 
 app.mount("#app");
+
