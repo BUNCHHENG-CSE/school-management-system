@@ -24,7 +24,6 @@ const menuModeOptions = ref([
 
 const primaryColors = ref([
     { name: "noir", palette: {} },
-   
     {
         name: "rupp",
         palette: {

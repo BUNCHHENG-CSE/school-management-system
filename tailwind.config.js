@@ -6,6 +6,7 @@ export default {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     plugins: [PrimeUI],
     theme: {
+       
         screens: {
             sm: '576px',
             md: '768px',

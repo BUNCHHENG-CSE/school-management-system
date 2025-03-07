@@ -4,7 +4,7 @@ const layoutConfig = reactive({
     preset: "Aura",
     primary: "rupp",
     surface: null,
-    darkTheme: false,
+    darkTheme: true,
     menuMode: "static",
 });
 
