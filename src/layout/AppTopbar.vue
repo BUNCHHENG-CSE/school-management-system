@@ -66,7 +66,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         ]"
                     ></i>
                 </button>
-                <div class="relative">
+                <!-- <div class="relative">
                     <button
                         v-styleclass="{
                             selector: '@next',
@@ -82,7 +82,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
                         <i class="pi pi-palette"></i>
                     </button>
                     <AppConfigurator />
-                </div>
+                </div> -->
             </div>
 
             <button
