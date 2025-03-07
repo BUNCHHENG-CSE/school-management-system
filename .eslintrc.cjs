@@ -6,7 +6,7 @@ module.exports = {
     env: {
         node: true,
     },
-    extends: ["plugin:vue/vue3-essential", "@vue/eslint-config-prettier"],
+    extends: ["plugin:vue/vue3-essential"],
     parserOptions: {
         ecmaVersion: "latest",
     },
