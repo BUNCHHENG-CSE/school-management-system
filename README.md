@@ -24,7 +24,7 @@ The **School Management System** is a comprehensive platform designed to streaml
 ## Installation & Setup
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/school-management-system.git
+   git clone https://github.com/BUNCHHENG-CSE/school-management-system.git
    cd school-management-system
    ```
 2. Install dependencies:
