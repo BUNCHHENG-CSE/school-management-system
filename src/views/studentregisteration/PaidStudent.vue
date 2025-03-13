@@ -264,12 +264,12 @@ file,
                                                     <span>Gender</span>
                                                     <div class="flex items-center gap-2">
                                                         <RadioButton v-model="gender" inputId="male" name="gender"
-                                                            value="Male" />
+                                                            value="1" />
                                                         <label for="male">Male</label>
                                                     </div>
                                                     <div class="flex items-center gap-2">
                                                         <RadioButton v-model="gender" inputId="female" name="gender"
-                                                            value="Female" />
+                                                            value="0" />
                                                         <label for="female">Female</label>
                                                     </div>
                                                 </div>
@@ -299,14 +299,14 @@ file,
                                                 <div class="flex flex-col gap-4 my-10  w-full">
                                                     <InputGroup>
                                                         <InputGroup>
-                                                            <InputText placeholder="Price" class=" rounded-r-none"/>
+                                                            <InputText placeholder="Price" class=" rounded-r-none" />
                                                         </InputGroup>
 
                                                         <InputGroup>
                                                             <IftaLabel class="w-full">
                                                                 <Select id="pob" v-model="initialValues.pob
                                                                     " :options="dropdownItems
-                                                                    " optionLabel="name" placeholder="Select One"
+                                                                        " optionLabel="name" placeholder="Select One"
                                                                     class="w-full" />
                                                                 <label for="pob">Place Of
                                                                     Birth</label>
