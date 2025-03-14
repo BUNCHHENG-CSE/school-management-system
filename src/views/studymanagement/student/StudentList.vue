@@ -1,152 +1,55 @@
 <script setup>
 import { ref } from "vue";
-import { usePrimeVue } from "primevue/config";
 import { useToast } from "primevue/usetoast";
+
+import { computed } from "vue";
 import axios from "axios";
+import StudentInformation from "./StudentInformation.vue";
 
 const toast = useToast();
-const $primevue = usePrimeVue();
-const currentStep = ref("1");
-
-const initialStudentValues = ref({
-    card_num: "",
-    degree_num: "",
-    first_name_en: "",
-    last_name_en: "",
-    full_name_en: "",
-    first_name_kh: "",
-    last_name_kh: "",
-    full_name_kh: "",
-    gender: "",
-    nationality: "",
-    ethnicity: "",
+const dt = ref(null);
+const students = ref([]);
+const selectedstudents = ref();
+const prompt = ref("");
+const showPaginator = computed(() => students.value.length > 10);
+const initialStudentValuesSearch = ref({
+    stu_card: "",
+    name_en: "",
+    name_kh: "",
     birth_date: "",
-    place_of_birth: "",
-    place_of_birth_province: "",
-    address: "",
-    address_province: "",
-    job: "",
-    telephone: "",
+
 });
-const initialParentValues = ref({
-    father_name: "",
-    father_birth_year: "",
-    father_nationality: "",
-    father_ethnicity: "",
-    father_life_status: "",
-    father_job: "",
-    father_telephone: "",
-    mother_name: "",
-    mother_birth_year: "",
-    mother_nationality: "",
-    mother_ethnicity: "",
-    mother_life_status: "",
-    mother_job: "",
-    mother_telephone: "",
-    student_id: "",
-})
-const defaultStudentValues = JSON.parse(JSON.stringify(initialStudentValues.value));
-const defaultParentValues = JSON.parse(JSON.stringify(initialParentValues.value));
-const dropdownItemsprovince = ref([
-    { name: "Banteay Meanchey", code: "Banteay Meanchey" },
-    { name: "Battambang", code: "Battambang" },
-    { name: "Kampong Cham", code: "Kampong Cham" },
-    { name: "Kampong Thom", code: "Kampong Thom" },
-    { name: "Kampot", code: "Kampot" },
-    { name: "Kandal", code: "Kandal" },
-    { name: "Koh Kong", code: "Koh Kong" },
-    { name: "Kratie", code: "Kratie" },
-    { name: "Mondulkiri", code: "Mondulkiri" },
-    { name: "Oddar Meanchey", code: "Oddar Meanchey" },
-    { name: "Pailin", code: "Pailin" },
-    { name: "Phnom Penh", code: "Phnom Penh" },
-    { name: "Preah Vihear", code: "Preah Vihear" },
-    { name: "Prey Veng", code: "Prey Veng" },
-    { name: "Pursat", code: "Pursat" },
-    { name: "Ratanakiri", code: "Ratanakiri" },
-    { name: "Siem Reap", code: "Siem Reap" },
-    { name: "Sihanoukville", code: "Sihanoukville" },
-    { name: "Stung Treng", code: "Stung Treng" },
-    { name: "Takeo", code: "Takeo" },
-    { name: "Tboung Khmum", code: "Tboung Khmum" }
-]);
-const dropdownItemsnationality = ref([
-    { name: "Khmer", code: "khmer" },
-]);
-const dropdownItemsethnicity = ref([
-    { name: "Khmer", code: "khmer" },
-]);
+
+const defaultStudentValuesSearch = JSON.parse(JSON.stringify(initialStudentValuesSearch.value));
+
 const onFormSubmit = async () => {
-
-    // const response = await axios.get("http://localhost:8888/api/v1/students");
-    // console.log(response.data.id);
-    initialStudentValues.value.full_name_en = initialStudentValues.value.first_name_en + " " + initialStudentValues.value.last_name_en;
-    initialStudentValues.value.full_name_kh = initialStudentValues.value.first_name_kh + " " + initialStudentValues.value.last_name_kh;
-    initialStudentValues.value.birth_date = formatStudentBirthDate(initialStudentValues.value.birth_date);
-    initialParentValues.value.father_birth_year = formatParentBirthDate(initialParentValues.value.father_birth_year);
-    initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParentValues.value.mother_birth_year);
-
-    const response = await axios.post("http://localhost:8888/api/v1/students", initialStudentValues.value)
+    initialStudentValuesSearch.value.birth_date = formatStudentBirthDate(initialStudentValuesSearch.value.birth_date);
+    const filteredValues = Object.fromEntries(
+        Object.entries(initialStudentValuesSearch.value)
+            .filter(([key, value]) => value !== null && value !== "")
+    );
+    const params = new URLSearchParams(filteredValues).toString();
+    console.log(params);
+    const response = await axios.get(`http://localhost:8888/api/v1/students/search?${params}`)
         .then(response => {
-            if (response.status === 201) {
-                initialParentValues.value.student_id = response.data.data.id;
-                const res = axios.post("http://localhost:8888/api/v1/parents", initialParentValues.value)
-                    .then(res => {
-                        console.log(res.data);
-                        if (res.status === 201) {
-                            console.log("Success:", res.data);
-                            initialStudentValues.value = JSON.parse(JSON.stringify(defaultStudentValues));
-                            initialParentValues.value = JSON.parse(JSON.stringify(defaultParentValues));
-                            currentStep.value = "1";
-                            alert(res.data.message);
-                        } else {
-                            console.error("Error:", res.data);
-                            alert("Registration failed. Please try again.");
-                        }
-                    }).catch(error => {
-                        console.log(error);
-                    });
-            } else if (response.status === 400) {
-                console.error("Error:", response.data.message);
-                alert("Registration failed. Please try again.");
+            if (response.status === 200) {
+                // console.log(response.data.data);
+                students.value = response.data.data;
+
+                toast.add({
+                    severity: "success",
+                    summary: "Search Success",
+                    detail: "Student found",
+                    life: 3000,
+                });
+                initialStudentValuesSearch.value = JSON.parse(JSON.stringify(defaultStudentValuesSearch));
             }
         }).catch(error => {
             console.log(error.message);
             alert("Registration failed. Please try again.");
         });
-    currentStep.value = "1";
 };
-
-const nextStep = (step) => {
-    currentStep.value = step;
-};
-
-const onSelectedFiles = (event) => {
-    if (event.files.length > 1) {
-        event.files.splice(1);
-    }
-};
-
-const uploadEvent = (callback) => {
-    callback();
-};
-
-const onTemplatedUpload = () => {
-    toast.add({
-        severity: "info",
-        summary: "Success",
-        detail: "File Uploaded",
-        life: 3000,
-    });
-};
-
-const formatSize = (bytes) => {
-    const k = 1024;
-    const sizes = $primevue.config.locale.fileSizeTypes;
-    if (bytes === 0) return `0 ${sizes[0]}`;
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return `${(bytes / Math.pow(k, i)).toFixed(2)} ${sizes[i]}`;
-};
+console.log(students.value);
 const formatStudentBirthDate = (brithdate) => {
     if (brithdate) {
         const date = new Date(brithdate);
@@ -157,17 +60,14 @@ const formatStudentBirthDate = (brithdate) => {
     }
     return brithdate;
 }
-const formatParentBirthDate = (brithdate) => {
-    if (brithdate) {
-        const date = new Date(brithdate);
-        const year = date.getFullYear();
-        brithdate = `${year}`;
-    }
-    return brithdate;
-}
+const sendPrompt = (id) => {
+    prompt.value = id;
+};
+
 </script>
 
 <template>
+    <Toast />
     <Fluid class="flex flex-row mb-5">
         <div class="w-full">
             <div class="card" style="padding: 1rem 2rem 0.3rem 2rem;">
@@ -176,8 +76,7 @@ const formatParentBirthDate = (brithdate) => {
         </div>
     </Fluid>
     <Fluid class="flex flex-row gap-8">
-        <div class="w-full">
-
+        <div class="w-full ">
             <div class="card">
                 <div>
                     <Tabs value="0">
@@ -186,30 +85,81 @@ const formatParentBirthDate = (brithdate) => {
                             <Tab value="1">Student List</Tab>
                             <Tab value="2">Export Student</Tab>
                             <Tab value="3">List Student pre-exam</Tab>
-
                         </TabList>
                         <TabPanels>
                             <TabPanel value="0">
-                                <div class="flex flex-row gap-4 justify-end">
-                                    <FloatLabel variant="on">
-                                        <InputText id="on_label" v-model="value3" />
-                                        <label for="on_label">Student ID</label>
-                                    </FloatLabel>
-                                    <FloatLabel variant="on">
-                                        <InputText id="on_label" v-model="value3" />
-                                        <label for="on_label">Student ID</label>
-                                    </FloatLabel>
-                                    <FloatLabel variant="on">
-                                        <InputText id="on_label" v-model="value3" />
-                                        <label for="on_label">Student ID</label>
-                                    </FloatLabel>
+                                <Form @submit="onFormSubmit">
+                                    <div class="flex flex-row gap-4 justify-end">
+                                        <IftaLabel>
+                                            <InputText id="on_label" v-model="initialStudentValuesSearch.stu_card" />
+                                            <label for="on_label">Student Card Number</label>
+                                        </IftaLabel>
+                                        <IftaLabel>
+                                            <InputText id="on_label" v-model="initialStudentValuesSearch.name_en" />
+                                            <label for="on_label">Name EN</label>
+                                        </IftaLabel>
+                                        <IftaLabel>
+                                            <InputText id="on_label" v-model="initialStudentValuesSearch.name_kh" />
+                                            <label for="on_label">Name KH</label>
+                                        </IftaLabel>
+                                        <IftaLabel>
+                                            <DatePicker id="dob" v-model="initialStudentValuesSearch.birth_date"
+                                                class="w-full" dateFormat="dd-mm-yy" show-icon iconDisplay="input" />
+                                            <label for="dob">Date Of
+                                                Birth</label>
+                                        </IftaLabel>
+                                        <Button type="submit" label="Search" icon="pi pi-search"
+                                            style="width: fit-content;" />
+                                    </div>
+                                </Form>
+                                <div v-if="students.length">
+                                    <div class="card">
+                                        <Toolbar class="mb-6" style="border: none;">
+                                            <template #end>
+                                                <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000"
+                                                    label="Import" customUpload chooseLabel="Import" class="mr-2" auto
+                                                    :chooseButtonProps="{ severity: 'secondary' }" />
+                                                <Button label="Export" icon="pi pi-upload" severity="secondary"
+                                                    @click="exportCSV($event)" />
+                                            </template>
+                                        </Toolbar>
 
-                                    <IftaLabel class="w-full">
-                                        <DatePicker id="dob" v-model="initialStudentValues.birth_date" class="w-full"
-                                            dateFormat="dd-mm-yy" show-icon iconDisplay="input" />
-                                        <label for="dob">Date Of
-                                            Birth</label>
-                                    </IftaLabel>
+                                        <DataTable ref="dt" v-model:selection="selectedstudents" :value="students"
+                                            dataKey="id" :paginator="showPaginator" :rows="10" :filters="filters"
+                                            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                                            :rowsPerPageOptions="[5, 10, 25]"
+                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} students">
+                                            <template #header>
+                                                <div class="flex flex-wrap gap-2 items-center justify-between">
+                                                    <h4 class="m-0">Student </h4>
+                                                </div>
+                                            </template>
+                                            <Column field="card_num" header="Card Number" style="min-width: 12rem">
+                                            </Column>
+                                            <Column field="full_name_en" header="Name En" style="min-width: 16rem">
+                                            </Column>
+                                            <Column field="full_name_kh" header="Name KH" style="min-width: 8rem">
+                                            </Column>
+                                            <Column field="degree_num" header="Degree Number" style="min-width: 10rem">
+                                            </Column>
+                                            <Column class="w-24 !text-end">
+                                                <template #body="{ data }">
+                                                    <Button icon="pi pi-search" @click="sendPrompt(data.id)"
+                                                        severity="secondary" rounded />
+                                                        <!-- <RouterLink to="/studymanagement/student/studentinformation"></RouterLink> -->
+
+
+                                                    <!-- <StudentInformation :id="prompt" /> -->
+                                                </template>
+                                            </Column>
+                                        </DataTable>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <div class="card text-center">
+
+                                        <h5> No student available</h5>
+                                    </div>
                                 </div>
                             </TabPanel>
                             <TabPanel value="1">
@@ -224,8 +174,10 @@ const formatParentBirthDate = (brithdate) => {
 
                         </TabPanels>
                     </Tabs>
+
                 </div>
             </div>
         </div>
     </Fluid>
+    <StudentInformation v-if="prompt" :id="prompt" />
 </template>
