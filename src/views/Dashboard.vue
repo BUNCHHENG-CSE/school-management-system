@@ -4,6 +4,6 @@ import StatsWidget from '@/components/dashboard/StatsWidget.vue';
 
 <template>
     <div class="grid grid-cols-12 gap-8">
-        <StatsWidget />
+        <StatsWidget  />
     </div>
 </template>

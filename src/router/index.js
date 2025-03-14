@@ -23,6 +23,16 @@ const router = createRouter({
                     name: 'Scholarship Student',
                     component: () => import('@/views/studentregisteration/ScholarshipStudent.vue')
                 },
+                {
+                    path:'/studymanagement/student/studentlist',
+                    name:'Student List',
+                    component:()=>import('@/views/studymanagement/student/StudentList.vue')
+                },
+                {
+                    path:'/studymanagement/student/studentstudyabroad',
+                    name:'Student Study Abroad',
+                    component:()=>import('@/views/studymanagement/student/StudentStudyAbroad.vue')
+                },
             ]
         },
     ]
