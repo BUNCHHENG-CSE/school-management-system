@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { usePrimeVue } from "primevue/config";
 import { useToast } from "primevue/usetoast";
-import { computed } from "vue";
 import axios from "axios";
 
 const toast = useToast();
@@ -48,7 +47,7 @@ const initialParentValues = ref({
 })
 const defaultStudentValues = JSON.parse(JSON.stringify(initialStudentValues.value));
 const defaultParentValues = JSON.parse(JSON.stringify(initialParentValues.value));
-const dropdownItems = ref([
+const dropdownItemsprovince = ref([
     { name: "Phnom Penh", code: "Phnom Penh" },
     { name: "Siem Reap", code: "Siem Reap" },
     { name: "Battambang", code: "Battambang" },
@@ -71,15 +70,12 @@ const dropdownItems = ref([
     { name: "Pailin", code: "Pailin" },
     { name: "Tboung Khmum", code: "Tboung Khmum" },
 ]);
-// const formattedStudentdBirthDate = computed({
-//   get() {
-//     const bd = initialStudentValues.value.birth_date;
-//     return bd && bd.includes("T") ? bd.toISOString().split('T')[0] : bd;
-//   },
-//   set(newValue) {
-//     initialStudentValues.value.birth_date = newValue;
-//   }
-// });
+const dropdownItemsnationality = ref([
+{ name: "Khmer", code: "khmer" },
+]);
+const dropdownItemsethnicity = ref([
+{ name: "Khmer", code: "khmer" },
+]);
 const onFormSubmit = async () => {
 
     // const response = await axios.get("http://localhost:8888/api/v1/students");
@@ -89,43 +85,42 @@ const onFormSubmit = async () => {
     initialStudentValues.value.birth_date = formatStudentBirthDate(initialStudentValues.value.birth_date);
     initialParentValues.value.father_birth_year = formatParentBirthDate(initialParentValues.value.father_birth_year);
     initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParentValues.value.mother_birth_year);
-    console.log(JSON.stringify(initialStudentValues.value));
-    console.log(JSON.stringify(initialParentValues.value));
-    // const response = await axios.post("http://localhost:8888/api/v1/students", initialStudentValues.value)
-    //     .then(response => {
-    //         console.log(response.data.id);
-    //         if (response.status === 201) {
-    //             initialParentValues.value.student_id = response.data.id;
-    //             const res = axios.post("http://localhost:8888/api/v1/parents", JSON.stringify(initialParentValues.value))
-    //                 .then(res => {
-    //                     console.log(res.data);
-    //                     if (res.status === 201) {
-    //                         console.log("Success:", res.data);
-    //                         alert("Student registered successfully!");
-
-    //                         initialStudentValues.value = JSON.parse(JSON.stringify(defaultStudentValues));
-    //                         initialParentValues.value = JSON.parse(JSON.stringify(defaultParentValues));
-    //                         // Redirect to first step
-    //                         currentStep.value = "1";
-    //                     } else {
-    //                         console.error("Error:", res.data);
-    //                         alert("Registration failed. Please try again.");
-    //                     }
-    //                 }).catch(error => {
-    //                     console.log(error);
-    //                 });
-
-    //         }
-    //     }).catch(error => {
-    //         console.log(error);
-    //     });
-
     // console.log(JSON.stringify(initialStudentValues.value));
     // console.log(JSON.stringify(initialParentValues.value));
 
-    // initialStudentValues.value = JSON.parse(JSON.stringify(defaultStudentValues));
+    const response = await axios.post("http://localhost:8888/api/v1/students", initialStudentValues.value)
+        .then(response => {
+            // console.log(response.data);
+            // console.log(response.data.data.id);
+            // if (response.data.status === 201) {
+            //     alert(response.data.message);
+            // }
+            if (response.status === 201) {
+                initialParentValues.value.student_id = response.data.data.id;
+                const res = axios.post("http://localhost:8888/api/v1/parents", initialParentValues.value)
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.status === 201) {
+                            console.log("Success:", res.data);
 
-    // initialParentValues.value = JSON.parse(JSON.stringify(defaultParentValues));
+
+                            initialStudentValues.value = JSON.parse(JSON.stringify(defaultStudentValues));
+                            initialParentValues.value = JSON.parse(JSON.stringify(defaultParentValues));
+                            // Redirect to first step
+                            currentStep.value = "1";
+                            alert(res.data.message);
+                        } else {
+                            console.error("Error:", res.data);
+                            alert("Registration failed. Please try again.");
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    });
+
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     currentStep.value = "1";
 };
 
@@ -341,7 +336,6 @@ const formatParentBirthDate = (brithdate) => {
                                                                 </div>
                                                             </template>
                                                         </FileUpload>
-
                                                         <div class="flex flex-wrap gap-4 my-8 items-center">
                                                             <span>Gender</span>
                                                             <div class="flex items-center gap-2">
@@ -405,7 +399,7 @@ const formatParentBirthDate = (brithdate) => {
                                                         <div class="flex flex-col gap-4 w-full">
                                                             <IftaLabel class="w-full">
                                                                 <Select id="nationality" v-model="initialStudentValues.nationality
-                                                                    " :options="dropdownItems
+                                                                    " :options="dropdownItemsnationality
                                                                         " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full" />
                                                                 <label for="nationality">Nationality</label>
@@ -430,12 +424,11 @@ const formatParentBirthDate = (brithdate) => {
                                                                             v-model="initialStudentValues.place_of_birth" />
                                                                     </IftaLabel>
                                                                 </InputGroup>
-
                                                                 <InputGroup>
                                                                     <IftaLabel class="w-full">
                                                                         <Select id="pobprovince"
                                                                             v-model="initialStudentValues.place_of_birth_province"
-                                                                            :options="dropdownItems
+                                                                            :options="dropdownItemsprovince
                                                                                 " optionLabel="name" optionValue="code"
                                                                             placeholder="Select One" class="w-full"
                                                                             style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" />
@@ -460,7 +453,7 @@ const formatParentBirthDate = (brithdate) => {
                                                         <div class="flex flex-col gap-4 w-full">
                                                             <IftaLabel class="w-full">
                                                                 <Select id="pob" v-model="initialStudentValues.ethnicity
-                                                                    " :options="dropdownItems
+                                                                    " :options="dropdownItemsethnicity
                                                                         " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full" />
                                                                 <label for="pob">Ethnicity</label>
@@ -475,11 +468,10 @@ const formatParentBirthDate = (brithdate) => {
                                                                             disabled />
                                                                     </IftaLabel>
                                                                 </InputGroup>
-
                                                                 <InputGroup>
                                                                     <IftaLabel class="w-full">
                                                                         <Select id="highschoolprovince" v-model="initialStudentValues.highschoolprovince
-                                                                            " :options="dropdownItems
+                                                                            " :options="dropdownItemsprovince
                                                                                 " optionLabel="name" optionValue="code"
                                                                             placeholder="Select One" class="w-full"
                                                                             disabled
@@ -502,11 +494,10 @@ const formatParentBirthDate = (brithdate) => {
                                                                             v-model="initialStudentValues.address" />
                                                                     </IftaLabel>
                                                                 </InputGroup>
-
                                                                 <InputGroup>
                                                                     <IftaLabel class="w-full">
                                                                         <Select id="currprovince" v-model="initialStudentValues.address_province
-                                                                            " :options="dropdownItems
+                                                                            " :options="dropdownItemsprovince
                                                                                 " optionLabel="name" optionValue="code"
                                                                             placeholder="Select One" class="w-full"
                                                                             style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" />
@@ -532,7 +523,6 @@ const formatParentBirthDate = (brithdate) => {
                                                                     <label for="familystatusmarried">married</label>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -552,7 +542,7 @@ const formatParentBirthDate = (brithdate) => {
                                                             </IftaLabel>
                                                             <IftaLabel class="w-full">
                                                                 <Select id="fathernationality" v-model="initialParentValues.father_nationality
-                                                                    " :options="dropdownItems
+                                                                    " :options="dropdownItemsnationality
                                                                         " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full" />
                                                                 <label for="fathernationality">Nationality</label>
@@ -592,7 +582,7 @@ const formatParentBirthDate = (brithdate) => {
                                                             </IftaLabel>
                                                             <IftaLabel class="w-full">
                                                                 <Select id="fatherethnicity" v-model="initialParentValues.father_ethnicity
-                                                                    " :options="dropdownItems
+                                                                    " :options="dropdownItemsethnicity
                                                                         " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full" />
                                                                 <label for="fatherethnicity">Ethnicity</label>
@@ -615,7 +605,7 @@ const formatParentBirthDate = (brithdate) => {
                                                             </IftaLabel>
                                                             <IftaLabel class="w-full">
                                                                 <Select id="mothernationality" v-model="initialParentValues.mother_nationality
-                                                                    " :options="dropdownItems
+                                                                    " :options="dropdownItemsnationality
                                                                         " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full" />
                                                                 <label for="mothernationality">Nationality</label>
@@ -655,7 +645,7 @@ const formatParentBirthDate = (brithdate) => {
                                                             </IftaLabel>
                                                             <IftaLabel class="w-full">
                                                                 <Select id="motherethnicity" v-model="initialParentValues.mother_ethnicity
-                                                                    " :options="dropdownItems
+                                                                    " :options="dropdownItemsethnicity
                                                                         " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full" />
                                                                 <label for="motherethnicity">Ethnicity</label>
