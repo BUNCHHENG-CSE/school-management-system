@@ -1,5 +1,20 @@
 <script setup>
-console.log(id);
+import { ref } from "vue";
+import axios from "axios";
+const { cardNum } = defineProps(['cardNum']);
+const card_num = ref(cardNum);
+
+
+const response = await axios.get(`http://localhost:8888/api/v1/students/${card_num.value}`)
+    .then(response => {
+        if (response.status === 200) {
+            console.log(response.data.data);
+        }
+    }).catch(error => {
+        console.log(error.message);
+        //alert("Registration failed. Please try again.");
+    });
+console.log(response);
 </script>
 
 <template>
@@ -9,7 +24,7 @@ console.log(id);
                 <div class="w-full">
                     <div class="card">
                         <h5>Coming Soon ...</h5>
-                        <p>{{ id }}</p>
+
                     </div>
                 </div>
             </div>

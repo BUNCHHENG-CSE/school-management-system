@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
-
+import { useRouter } from "vue-router";
 import { computed } from "vue";
 import axios from "axios";
 import StudentInformation from "./StudentInformation.vue";
@@ -11,6 +11,7 @@ const dt = ref(null);
 const students = ref([]);
 const selectedstudents = ref();
 const prompt = ref("");
+const router = useRouter();
 const showPaginator = computed(() => students.value.length > 10);
 const initialStudentValuesSearch = ref({
     stu_card: "",
@@ -60,8 +61,9 @@ const formatStudentBirthDate = (brithdate) => {
     }
     return brithdate;
 }
-const sendPrompt = (id) => {
-    prompt.value = id;
+const sendPrompt = (card_num) => {
+    prompt.value = card_num;
+    router.push('/studymanagement/student/studentinformation');
 };
 
 </script>
@@ -144,15 +146,13 @@ const sendPrompt = (id) => {
                                             </Column>
                                             <Column class="w-24 !text-end">
                                                 <template #body="{ data }">
-                                                    <Button icon="pi pi-search" @click="sendPrompt(data.id)"
+                                                    <Button icon="pi pi-search" @click="sendPrompt(data.card_num)"
                                                         severity="secondary" rounded />
-                                                        <!-- <RouterLink to="/studymanagement/student/studentinformation"></RouterLink> -->
 
-
-                                                    <!-- <StudentInformation :id="prompt" /> -->
                                                 </template>
                                             </Column>
                                         </DataTable>
+
                                     </div>
                                 </div>
                                 <div v-else>
@@ -179,5 +179,11 @@ const sendPrompt = (id) => {
             </div>
         </div>
     </Fluid>
-    <StudentInformation v-if="prompt" :id="prompt" />
+
+    <template>
+
+        <StudentInformation v-if="prompt" :cardNum="prompt" />
+    </template>
+
+
 </template>
