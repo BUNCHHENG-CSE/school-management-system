@@ -1,21 +1,53 @@
 <script setup>
 import { ref } from "vue";
+import { usePrimeVue } from "primevue/config";
+import { useToast } from "primevue/usetoast";
+import { computed } from "vue";
 import axios from "axios";
+
+const toast = useToast();
+const $primevue = usePrimeVue();
 const currentStep = ref("1");
 
-const initialValues = ref({
-    firstnameEN: "",
-    lastnameEN: "",
-    firstnameKH: "",
-    lastnameKH: "",
+const initialStudentValues = ref({
+    card_num: "",
+    degree_num: "",
+    first_name_en: "",
+    last_name_en: "",
+    full_name_en: "",
+    first_name_kh: "",
+    last_name_kh: "",
+    full_name_kh: "",
     gender: "",
-    dob: "",
-    pob: "",
-    code: "",
+    nationality: "",
+    ethnicity: "",
+    birth_date: "",
+    place_of_birth: "",
+    place_of_birth_province: "",
+    address: "",
+    address_province: "",
+    job: "",
+    telephone: "",
 });
-
-const defaultValues = JSON.parse(JSON.stringify(initialValues.value));
-
+const initialParentValues = ref({
+    father_name: "",
+    father_birth_year: "",
+    father_nationality: "",
+    father_ethnicity: "",
+    father_life_status: "",
+    father_job: "",
+    father_telephone: "",
+    mother_name: "",
+    mother_birth_year: "",
+    mother_nationality: "",
+    mother_ethnicity: "",
+    mother_life_status: "",
+    mother_job: "",
+    mother_telephone: "",
+    student_id: "",
+})
+const defaultStudentValues = JSON.parse(JSON.stringify(initialStudentValues.value));
+const defaultParentValues = JSON.parse(JSON.stringify(initialParentValues.value));
 const dropdownItems = ref([
     { name: "Phnom Penh", code: "Phnom Penh" },
     { name: "Siem Reap", code: "Siem Reap" },
@@ -39,46 +71,112 @@ const dropdownItems = ref([
     { name: "Pailin", code: "Pailin" },
     { name: "Tboung Khmum", code: "Tboung Khmum" },
 ]);
-
+// const formattedStudentdBirthDate = computed({
+//   get() {
+//     const bd = initialStudentValues.value.birth_date;
+//     return bd && bd.includes("T") ? bd.toISOString().split('T')[0] : bd;
+//   },
+//   set(newValue) {
+//     initialStudentValues.value.birth_date = newValue;
+//   }
+// });
 const onFormSubmit = async () => {
-    // try {
-    //   const response = await fetch("https://api.example.com/register-student", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(initialValues.value),
-    //   });
 
-    //   const result = await response.json();
+    // const response = await axios.get("http://localhost:8888/api/v1/students");
+    // console.log(response.data.id);
+    initialStudentValues.value.full_name_en = initialStudentValues.value.first_name_en + " " + initialStudentValues.value.last_name_en;
+    initialStudentValues.value.full_name_kh = initialStudentValues.value.first_name_kh + " " + initialStudentValues.value.last_name_kh;
+    initialStudentValues.value.birth_date = formatStudentBirthDate(initialStudentValues.value.birth_date);
+    initialParentValues.value.father_birth_year = formatParentBirthDate(initialParentValues.value.father_birth_year);
+    initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParentValues.value.mother_birth_year);
+    console.log(JSON.stringify(initialStudentValues.value));
+    console.log(JSON.stringify(initialParentValues.value));
+    // const response = await axios.post("http://localhost:8888/api/v1/students", initialStudentValues.value)
+    //     .then(response => {
+    //         console.log(response.data.id);
+    //         if (response.status === 201) {
+    //             initialParentValues.value.student_id = response.data.id;
+    //             const res = axios.post("http://localhost:8888/api/v1/parents", JSON.stringify(initialParentValues.value))
+    //                 .then(res => {
+    //                     console.log(res.data);
+    //                     if (res.status === 201) {
+    //                         console.log("Success:", res.data);
+    //                         alert("Student registered successfully!");
 
-    //   if (response.ok) {
-    //     console.log("Success:", result);
-    //     alert("Student registered successfully!");
+    //                         initialStudentValues.value = JSON.parse(JSON.stringify(defaultStudentValues));
+    //                         initialParentValues.value = JSON.parse(JSON.stringify(defaultParentValues));
+    //                         // Redirect to first step
+    //                         currentStep.value = "1";
+    //                     } else {
+    //                         console.error("Error:", res.data);
+    //                         alert("Registration failed. Please try again.");
+    //                     }
+    //                 }).catch(error => {
+    //                     console.log(error);
+    //                 });
 
-    //     // Reset the form fields
-    //     initialValues.value = JSON.parse(JSON.stringify(defaultValues));
+    //         }
+    //     }).catch(error => {
+    //         console.log(error);
+    //     });
 
-    //     // Redirect to first step
-    //     currentStep.value = "1";
-    //   } else {
-    //     console.error("Error:", result);
-    //     alert("Registration failed. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error("API Error:", error);
-    //   alert("An error occurred. Please check your connection.");
-    // }
-    console.log(JSON.stringify(initialValues.value));
+    // console.log(JSON.stringify(initialStudentValues.value));
+    // console.log(JSON.stringify(initialParentValues.value));
 
-    initialValues.value = JSON.parse(JSON.stringify(defaultValues));
+    // initialStudentValues.value = JSON.parse(JSON.stringify(defaultStudentValues));
 
+    // initialParentValues.value = JSON.parse(JSON.stringify(defaultParentValues));
     currentStep.value = "1";
 };
 
 const nextStep = (step) => {
     currentStep.value = step;
 };
+
+const onSelectedFiles = (event) => {
+    if (event.files.length > 1) {
+        event.files.splice(1);
+    }
+};
+
+const uploadEvent = (callback) => {
+    callback();
+};
+
+const onTemplatedUpload = () => {
+    toast.add({
+        severity: "info",
+        summary: "Success",
+        detail: "File Uploaded",
+        life: 3000,
+    });
+};
+
+const formatSize = (bytes) => {
+    const k = 1024;
+    const sizes = $primevue.config.locale.fileSizeTypes;
+    if (bytes === 0) return `0 ${sizes[0]}`;
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${(bytes / Math.pow(k, i)).toFixed(2)} ${sizes[i]}`;
+};
+const formatStudentBirthDate = (brithdate) => {
+    if (brithdate) {
+        const date = new Date(brithdate);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        brithdate = `${year}-${month}-${day}`;
+    }
+    return brithdate;
+}
+const formatParentBirthDate = (brithdate) => {
+    if (brithdate) {
+        const date = new Date(brithdate);
+        const year = date.getFullYear();
+        brithdate = `${year}`;
+    }
+    return brithdate;
+}
 </script>
 
 <template>
@@ -99,286 +197,479 @@ const nextStep = (step) => {
                             <Form @submit="onFormSubmit">
                                 <StepPanels>
                                     <StepPanel value="1" class="p-4">
-                                        <h1>Registration</h1>
-                                        <div class="w-full grid grid-cols-2 gap-4">
-                                            <!-- Left Column -->
+                                        <!-- Student Info -->
+                                        <div>
+                                            <h1>Registration</h1>
                                             <div>
-                                                <Toast />
-                                                <FileUpload name="demo[]" url="/api/upload" @upload="
-                                                    onTemplatedUpload(
-                                                        $event
-                                                    )
-                                                    " :multiple="true" accept="image/*" :maxFileSize="1000000"
-                                                    @select="onSelectedFiles">
-                                                    <template #header="{
-                                                        chooseCallback,
-                                                        uploadCallback,
-                                                        clearCallback,
-                                                        files,
-                                                    }">
-                                                        <div
-                                                            class="flex flex-wrap justify-between items-center flex-1 gap-4">
-                                                            <div class="flex gap-2">
-                                                                <Button @click="
-                                                                    chooseCallback()
-                                                                    " icon="pi pi-images" rounded outlined
-                                                                    severity="secondary"></Button>
-                                                                <Button @click="
-                                                                    uploadEvent(
-                                                                        uploadCallback
-                                                                    )
-                                                                    " icon="pi pi-cloud-upload" rounded outlined
-                                                                    severity="success" :disabled="!files ||
-                                                                        files.length ===
-                                                                        0
-                                                                        "></Button>
-                                                                <Button @click="
-                                                                    clearCallback()
-                                                                    " icon="pi pi-times" rounded outlined
-                                                                    severity="danger" :disabled="!files ||
-                                                                        files.length ===
-                                                                        0
-                                                                        "></Button>
-                                                            </div>
-                                                            <ProgressBar :value="totalSizePercent
-                                                                " :showValue="false
-                                                                    " class="md:w-20rem h-1 w-full md:ml-auto">
-                                                                <span class="whitespace-nowrap">{{
-                                                                    totalSize
-                                                                    }}B /
-                                                                    1Mb</span>
-                                                            </ProgressBar>
-                                                        </div>
-                                                    </template>
-                                                    <template #content="{
-                                                        files,
-                                                        uploadedFiles,
-                                                        removeUploadedFileCallback,
-                                                        removeFileCallback,
-                                                        messages,
-                                                    }">
-                                                        <div class="flex flex-col gap-8 pt-4">
-                                                            <Message v-for="message of messages" :key="message" :class="{
-                                                                'mb-8':
-                                                                    !files.length &&
-                                                                    !uploadedFiles.length,
-                                                            }" severity="error">
-                                                                {{ message }}
-                                                            </Message>
-
-                                                            <div v-if="
-                                                                files.length >
-                                                                0
+                                                <!-- Part 1-->
+                                                <div class="w-full grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <IftaLabel class="w-full mb-4">
+                                                            <label for="phonenumber">Card Number</label>
+                                                            <InputText id="phonenumber" v-model="initialStudentValues.card_num
+                                                                " type="text" class="w-full" />
+                                                        </IftaLabel>
+                                                        <Toast />
+                                                        <FileUpload disabled name="demo[]" url="/api/upload" @upload="
+                                                            onTemplatedUpload
+                                                        " :multiple="false" accept="image/*" :maxFileSize="1000000"
+                                                            @select="
+                                                                onSelectedFiles
                                                             ">
-                                                                <h5>Pending</h5>
-                                                                <div class="flex flex-wrap gap-4">
-                                                                    <div v-for="(file, index
-                                                                    ) of files"
-                                                                        :key="file.name + file.type + file.size"
-                                                                        class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
-                                                                        <div>
-                                                                            <img role="presentation" :alt="file.name
-                                                                                " :src="file.objectURL
-                                                                                    " width="100" height="50" />
-                                                                        </div>
-                                                                        <span
-                                                                            class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{
-                                                                                file.name
-                                                                            }}</span>
-                                                                        <div>
-                                                                            {{
-                                                                                formatSize(
-                                                                                    file.size
-                                                                                )
-                                                                            }}
-                                                                        </div>
-                                                                        <Badge value="Pending" severity="warn" />
-                                                                        <Button icon="pi pi-times" @click="
-                                                                            onRemoveTemplatingFile(
-                                                                                file,
-                                                                                removeFileCallback,
-                                                                                index
+                                                            <template #header="{
+                                                                chooseCallback,
+                                                                uploadCallback,
+                                                                clearCallback,
+                                                                files,
+                                                            }">
+                                                                <div class="flex justify-between items-center gap-4">
+                                                                    <div class="flex gap-2">
+                                                                        <Button @click="
+                                                                            chooseCallback()
+                                                                            " icon="pi pi-image" rounded outlined
+                                                                            severity="secondary"></Button>
+                                                                        <Button @click="
+                                                                            uploadEvent(
+                                                                                uploadCallback
                                                                             )
-                                                                            " outlined rounded severity="danger" />
+                                                                            " icon="pi pi-cloud-upload" rounded
+                                                                            outlined severity="success" :disabled="!files ||
+                                                                                files.length ===
+                                                                                0
+                                                                                "></Button>
+                                                                        <Button @click="
+                                                                            clearCallback()
+                                                                            " icon="pi pi-times" rounded outlined
+                                                                            severity="danger" :disabled="!files ||
+                                                                                files.length ===
+                                                                                0
+                                                                                "></Button>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-
-                                                            <div v-if="
-                                                                uploadedFiles.length >
-                                                                0
-                                                            ">
-                                                                <h5>
-                                                                    Completed
-                                                                </h5>
-                                                                <div class="flex flex-wrap gap-4">
-                                                                    <div v-for="(
-file,
-    index
-                                                                        ) of uploadedFiles" :key="file.name +
-                                                                            file.type +
-                                                                            file.size
-                                                                            "
-                                                                        class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
-                                                                        <div>
-                                                                            <img role="presentation" :alt="file.name
-                                                                                " :src="file.objectURL
+                                                            </template>
+                                                            <template #content="{
+                                                                files,
+                                                                uploadedFiles,
+                                                                removeUploadedFileCallback,
+                                                                removeFileCallback,
+                                                            }">
+                                                                <div class="pt-4">
+                                                                    <div v-if="
+                                                                        files.length >
+                                                                        0
+                                                                    ">
+                                                                        <h5>
+                                                                            Pending
+                                                                        </h5>
+                                                                        <div
+                                                                            class="p-4 border rounded flex flex-col items-center gap-4">
+                                                                            <img role="presentation" :alt="files[0]
+                                                                                .name
+                                                                                " :src="files[0]
+                                                                                    .objectURL
                                                                                     " width="100" height="50" />
-                                                                        </div>
-                                                                        <span
-                                                                            class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{
-                                                                                file.name
-                                                                            }}</span>
-                                                                        <div>
-                                                                            {{
-                                                                                formatSize(
-                                                                                    file.size
+                                                                            <span
+                                                                                class="font-semibold text-ellipsis max-w-60 overflow-hidden">{{
+                                                                                    files[0]
+                                                                                        .name
+                                                                                }}</span>
+                                                                            <div>
+                                                                                {{
+                                                                                    formatSize(
+                                                                                        files[0]
+                                                                                            .size
+                                                                                    )
+                                                                                }}
+                                                                            </div>
+                                                                            <Badge value="Pending" severity="warn" />
+                                                                            <Button icon="pi pi-times" @click="
+                                                                                removeFileCallback(
+                                                                                    0
                                                                                 )
-                                                                            }}
+                                                                                " outlined rounded severity="danger" />
                                                                         </div>
-                                                                        <Badge value="Completed" class="mt-4"
-                                                                            severity="success" />
-                                                                        <Button icon="pi pi-times" @click="
-                                                                            removeUploadedFileCallback(
-                                                                                index
-                                                                            )
-                                                                            " outlined rounded severity="danger" />
+                                                                    </div>
+
+                                                                    <div v-if="
+                                                                        uploadedFiles.length >
+                                                                        0
+                                                                    ">
+                                                                        <h5>
+                                                                            Completed
+                                                                        </h5>
+                                                                        <div
+                                                                            class="p-4 border rounded flex flex-col items-center gap-4">
+                                                                            <img role="presentation" :alt="uploadedFiles[0]
+                                                                                .name
+                                                                                " :src="uploadedFiles[0]
+                                                                                    .objectURL
+                                                                                    " width="100" height="50" />
+                                                                            <span
+                                                                                class="font-semibold text-ellipsis max-w-60 overflow-hidden">{{
+                                                                                    uploadedFiles[0]
+                                                                                        .name
+                                                                                }}</span>
+                                                                            <div>
+                                                                                {{
+                                                                                    formatSize(
+                                                                                        uploadedFiles[0]
+                                                                                            .size
+                                                                                    )
+                                                                                }}
+                                                                            </div>
+                                                                            <Badge value="Completed" class="mt-4"
+                                                                                severity="success" />
+                                                                            <Button icon="pi pi-times" @click="
+                                                                                removeUploadedFileCallback(
+                                                                                    0
+                                                                                )
+                                                                                " outlined rounded severity="danger" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
+                                                            </template>
+                                                            <template #empty>
+                                                                <div class="flex items-center justify-center flex-col">
+                                                                    <i
+                                                                        class="pi pi-cloud-upload border-2 rounded-full p-8 text-4xl text-muted-color" />
+                                                                    <p class="mt-6 mb-0">
+                                                                        Drag and
+                                                                        drop a file
+                                                                        here to
+                                                                        upload.
+                                                                    </p>
+                                                                </div>
+                                                            </template>
+                                                        </FileUpload>
+
+                                                        <div class="flex flex-wrap gap-4 my-8 items-center">
+                                                            <span>Gender</span>
+                                                            <div class="flex items-center gap-2">
+                                                                <RadioButton v-model="initialStudentValues.gender"
+                                                                    inputId="male" name="gender" value="1" />
+                                                                <label for="male">Male</label>
+                                                            </div>
+                                                            <div class="flex items-center gap-2">
+                                                                <RadioButton v-model="initialStudentValues.gender"
+                                                                    inputId="female" name="gender" value="0" />
+                                                                <label for="female">Female</label>
                                                             </div>
                                                         </div>
-                                                    </template>
-                                                    <template #empty>
-                                                        <div class="flex items-center justify-center flex-col">
-                                                            <i
-                                                                class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color" />
-                                                            <p class="mt-6 mb-0">
-                                                                Drag and drop
-                                                                files to here to
-                                                                upload.
-                                                            </p>
-                                                        </div>
-                                                    </template>
-                                                </FileUpload>
-                                                <div class="flex flex-wrap gap-4 my-10 justify-center items-center">
-                                                    <span>Gender</span>
-                                                    <div class="flex items-center gap-2">
-                                                        <RadioButton v-model="gender" inputId="male" name="gender"
-                                                            value="1" />
-                                                        <label for="male">Male</label>
                                                     </div>
-                                                    <div class="flex items-center gap-2">
-                                                        <RadioButton v-model="gender" inputId="female" name="gender"
-                                                            value="0" />
-                                                        <label for="female">Female</label>
-                                                    </div>
-                                                </div>
-                                                <div class="flex flex-col gap-4 my-10 w-full">
-                                                    <IftaLabel class="w-full">
-                                                        <Select id="pob" v-model="initialValues.pob
-                                                            " :options="dropdownItems
-                                                                " optionLabel="name" placeholder="Select One"
-                                                            class="w-full" />
-                                                        <label for="pob">Place Of
-                                                            Birth</label>
-                                                    </IftaLabel>
 
-                                                </div>
-                                                <div class="flex flex-col gap-4 my-10  w-full">
-                                                    <IftaLabel class="w-full">
-                                                        <label for="firstnameEN">Firstname EN</label>
-                                                        <InputText id="firstnameEN" v-model="initialValues.firstnameEN
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
-                                                    <IftaLabel class="w-full">
-                                                        <label for="lastnameEN">Lastname EN</label>
-                                                        <InputText id="lastnameEN" v-model="initialValues.lastnameEN
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
-                                                </div>
-                                                <div class="flex flex-col gap-4 my-10  w-full">
-                                                    <InputGroup>
-                                                        <InputGroup>
-                                                            <InputText placeholder="Price" class=" rounded-r-none" />
-                                                        </InputGroup>
-
-                                                        <InputGroup>
+                                                    <div class="grid">
+                                                        <div class="flex flex-col gap-4 w-full">
                                                             <IftaLabel class="w-full">
-                                                                <Select id="pob" v-model="initialValues.pob
-                                                                    " :options="dropdownItems
-                                                                        " optionLabel="name" placeholder="Select One"
-                                                                    class="w-full" />
-                                                                <label for="pob">Place Of
+                                                                <label for="phonenumber">Degree Number</label>
+                                                                <InputText id="phonenumber" v-model="initialStudentValues.degree_num
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="firstnameEN">Firstname
+                                                                    EN</label>
+                                                                <InputText id="firstnameEN" v-model="initialStudentValues.first_name_en
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="lastnameEN">Lastname
+                                                                    EN</label>
+                                                                <InputText id="lastnameEN" v-model="initialStudentValues.last_name_en
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="firstnameKH">Firstname
+                                                                    KH</label>
+                                                                <InputText id="firstnameKH" v-model="initialStudentValues.first_name_kh
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="lastnameKH">Lastname
+                                                                    KH</label>
+                                                                <InputText id="lastnameKH" v-model="initialStudentValues.last_name_kh
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <DatePicker id="dob"
+                                                                    v-model="initialStudentValues.birth_date"
+                                                                    class="w-full" dateFormat="dd-mm-yy" show-icon
+                                                                    iconDisplay="input" />
+                                                                <label for="dob">Date Of
                                                                     Birth</label>
                                                             </IftaLabel>
-                                                        </InputGroup>
-
-                                                    </InputGroup>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <!-- Part 2-->
+                                                <div class="w-full grid grid-cols-2 gap-4 my-5">
+                                                    <div>
+                                                        <div class="flex flex-col gap-4 w-full">
+                                                            <IftaLabel class="w-full">
+                                                                <Select id="nationality" v-model="initialStudentValues.nationality
+                                                                    " :options="dropdownItems
+                                                                        " optionLabel="name" optionValue="code"
+                                                                    placeholder="Select One" class="w-full" />
+                                                                <label for="nationality">Nationality</label>
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full" disable>
+                                                                <label for="nationalitynumber">Nationality
+                                                                    Number</label>
+                                                                <InputText id="nationalitynumber" v-model="initialStudentValues.NationalityNumber
+                                                                    " type="text" class="w-full" disabled />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="bac2gy">BACII Graduated Year</label>
+                                                                <InputText id="bac2gy" v-model="initialStudentValues.bac2gy
+                                                                    " type="text" class="w-full" disabled />
+                                                            </IftaLabel>
+                                                            <InputGroup>
+                                                                <InputGroup>
+                                                                    <IftaLabel class="w-full">
+                                                                        <label for="pob">Place Of Birth</label>
+                                                                        <InputText id="pob"
+                                                                            style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+                                                                            v-model="initialStudentValues.place_of_birth" />
+                                                                    </IftaLabel>
+                                                                </InputGroup>
 
-                                            </div>
+                                                                <InputGroup>
+                                                                    <IftaLabel class="w-full">
+                                                                        <Select id="pobprovince"
+                                                                            v-model="initialStudentValues.place_of_birth_province"
+                                                                            :options="dropdownItems
+                                                                                " optionLabel="name" optionValue="code"
+                                                                            placeholder="Select One" class="w-full"
+                                                                            style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" />
+                                                                        <label for="pobprovince">Province</label>
+                                                                    </IftaLabel>
+                                                                </InputGroup>
+                                                            </InputGroup>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="currentjob">Current Job</label>
+                                                                <InputText id="currentjob" v-model="initialStudentValues.job
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="phonenumber">Phone Number</label>
+                                                                <InputText id="phonenumber" v-model="initialStudentValues.telephone
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
 
-                                            <!-- Right Column -->
-                                            <div class="grid gap-4">
-                                                <div class="flex flex-col gap-4 w-full">
-                                                    <IftaLabel class="w-full">
-                                                        <label for="firstnameEN">Firstname EN</label>
-                                                        <InputText id="firstnameEN" v-model="initialValues.firstnameEN
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
-                                                    <IftaLabel class="w-full">
-                                                        <label for="lastnameEN">Lastname EN</label>
-                                                        <InputText id="lastnameEN" v-model="initialValues.lastnameEN
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
-                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex flex-col gap-4 w-full">
+                                                            <IftaLabel class="w-full">
+                                                                <Select id="pob" v-model="initialStudentValues.ethnicity
+                                                                    " :options="dropdownItems
+                                                                        " optionLabel="name" optionValue="code"
+                                                                    placeholder="Select One" class="w-full" />
+                                                                <label for="pob">Ethnicity</label>
+                                                            </IftaLabel>
+                                                            <InputGroup>
+                                                                <InputGroup>
+                                                                    <IftaLabel class="w-full">
+                                                                        <label for="highschooln">Hign school
+                                                                            name</label>
+                                                                        <InputText id="highschooln"
+                                                                            style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+                                                                            disabled />
+                                                                    </IftaLabel>
+                                                                </InputGroup>
 
-                                                <div class="flex flex-col gap-4 w-full">
-                                                    <IftaLabel class="w-full">
-                                                        <label for="firstnameKH">Firstname KH</label>
-                                                        <InputText id="firstnameKH" v-model="initialValues.firstnameKH
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
-                                                    <IftaLabel class="w-full">
-                                                        <label for="lastnameKH">Lastname KH</label>
-                                                        <InputText id="lastnameKH" v-model="initialValues.lastnameKH
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
-                                                </div>
+                                                                <InputGroup>
+                                                                    <IftaLabel class="w-full">
+                                                                        <Select id="highschoolprovince" v-model="initialStudentValues.highschoolprovince
+                                                                            " :options="dropdownItems
+                                                                                " optionLabel="name" optionValue="code"
+                                                                            placeholder="Select One" class="w-full"
+                                                                            disabled
+                                                                            style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" />
+                                                                        <label for="highschoolprovince">Province</label>
+                                                                    </IftaLabel>
+                                                                </InputGroup>
+                                                            </InputGroup>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="bac2cn">BACII Certificate Number</label>
+                                                                <InputText id="bac2cn" v-model="initialStudentValues.bac2certificatenumber
+                                                                    " type="text" class="w-full" disabled />
+                                                            </IftaLabel>
+                                                            <InputGroup>
+                                                                <InputGroup>
+                                                                    <IftaLabel class="w-full">
+                                                                        <label for="curraddress">Current Address</label>
+                                                                        <InputText id="curraddress"
+                                                                            style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+                                                                            v-model="initialStudentValues.address" />
+                                                                    </IftaLabel>
+                                                                </InputGroup>
 
-                                                <div class="flex flex-col gap-4 w-full">
-                                                    <IftaLabel class="w-full">
-                                                        <label for="gender">Gender</label>
-                                                        <InputText id="gender" v-model="initialValues.gender
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
-                                                    <IftaLabel class="w-full">
-                                                        <DatePicker id="dob" v-model="initialValues.dob
-                                                            " class="w-full" dateFormat="dd/mm/yy" show-icon
-                                                            iconDisplay="input" />
-                                                        <label for="dob">Date Of
-                                                            Birth</label>
-                                                    </IftaLabel>
-                                                </div>
+                                                                <InputGroup>
+                                                                    <IftaLabel class="w-full">
+                                                                        <Select id="currprovince" v-model="initialStudentValues.address_province
+                                                                            " :options="dropdownItems
+                                                                                " optionLabel="name" optionValue="code"
+                                                                            placeholder="Select One" class="w-full"
+                                                                            style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" />
+                                                                        <label for="currprovince">Province</label>
+                                                                    </IftaLabel>
+                                                                </InputGroup>
+                                                            </InputGroup>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="jobp">Job place</label>
+                                                                <InputText id="jobp" v-model="initialStudentValues.jobplace
+                                                                    " type="text" class="w-full" disabled />
+                                                            </IftaLabel>
+                                                            <div class="flex flex-wrap gap-4 my-8 items-center">
+                                                                <span>Family Status</span>
+                                                                <div class="flex items-center gap-2">
+                                                                    <RadioButton inputId="familystatussigle"
+                                                                        name="familystatus" value="1" disabled />
+                                                                    <label for="familystatussigle">Single</label>
+                                                                </div>
+                                                                <div class="flex items-center gap-2">
+                                                                    <RadioButton inputId="familystatusmarried"
+                                                                        name="familystatus" value="0" disabled />
+                                                                    <label for="familystatusmarried">married</label>
+                                                                </div>
+                                                            </div>
 
-                                                <div class="flex flex-col gap-4 w-full">
-                                                    <IftaLabel class="w-full">
-                                                        <Select id="pob" v-model="initialValues.pob
-                                                            " :options="dropdownItems
-                                                                " optionLabel="name" placeholder="Select One"
-                                                            class="w-full" />
-                                                        <label for="pob">Place Of
-                                                            Birth</label>
-                                                    </IftaLabel>
-                                                    <IftaLabel class="w-full">
-                                                        <label for="code">Code</label>
-                                                        <InputText id="code" v-model="initialValues.code
-                                                            " type="text" class="w-full" />
-                                                    </IftaLabel>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <!-- Parent Info -->
+                                        <div>
+                                            <h1>Family Status</h1>
+                                            <div>
+                                                <div class="w-full grid grid-cols-2 gap-4 my-5">
+                                                    <div>
+                                                        <div class="flex flex-col gap-4 w-full">
+                                                            <IftaLabel class="w-full">
+                                                                <label for="fathername">Father name</label>
+                                                                <InputText id="fathername" v-model="initialParentValues.father_name
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <Select id="fathernationality" v-model="initialParentValues.father_nationality
+                                                                    " :options="dropdownItems
+                                                                        " optionLabel="name" optionValue="code"
+                                                                    placeholder="Select One" class="w-full" />
+                                                                <label for="fathernationality">Nationality</label>
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="fatherphonenumber">Phone Number</label>
+                                                                <InputText id="fatherphonenumber" v-model="initialParentValues.father_telephone
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <div class="flex flex-wrap gap-4 my-8 items-center">
+                                                                <span>Status</span>
+                                                                <div class="flex items-center gap-2">
+                                                                    <RadioButton
+                                                                        v-model="initialParentValues.father_life_status"
+                                                                        inputId="fatherstatuslive" name="fatherstatus"
+                                                                        value="1" />
+                                                                    <label for="fatherstatuslive">Live</label>
+                                                                </div>
+                                                                <div class="flex items-center gap-2">
+                                                                    <RadioButton
+                                                                        v-model="initialParentValues.father_life_status"
+                                                                        inputId="fatherstatusdie" name="fatherstatus"
+                                                                        value="0" />
+                                                                    <label for="fatherstatusdie">Die</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex flex-col gap-4 w-full">
+                                                            <IftaLabel class="w-full">
+                                                                <DatePicker id="fatherdob" v-model="initialParentValues.father_birth_year
+                                                                    " class="w-full" view="year" dateFormat="yy"
+                                                                    show-icon iconDisplay="input" />
+                                                                <label for="fatherdob">Date Of
+                                                                    Birth</label>
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <Select id="fatherethnicity" v-model="initialParentValues.father_ethnicity
+                                                                    " :options="dropdownItems
+                                                                        " optionLabel="name" optionValue="code"
+                                                                    placeholder="Select One" class="w-full" />
+                                                                <label for="fatherethnicity">Ethnicity</label>
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="fatherjob">Job</label>
+                                                                <InputText id="fatherjob" v-model="initialParentValues.father_job
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="w-full grid grid-cols-2 gap-4 my-5">
+                                                    <div>
+                                                        <div class="flex flex-col gap-4 w-full">
+                                                            <IftaLabel class="w-full">
+                                                                <label for="mothername">Mother name</label>
+                                                                <InputText id="mothername" v-model="initialParentValues.mother_name
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <Select id="mothernationality" v-model="initialParentValues.mother_nationality
+                                                                    " :options="dropdownItems
+                                                                        " optionLabel="name" optionValue="code"
+                                                                    placeholder="Select One" class="w-full" />
+                                                                <label for="mothernationality">Nationality</label>
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="motherphonenumber">Phone Number</label>
+                                                                <InputText id="motherphonenumber" v-model="initialParentValues.mother_telephone
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                            <div class="flex flex-wrap gap-4 my-8 items-center">
+                                                                <span>Status</span>
+                                                                <div class="flex items-center gap-2">
+                                                                    <RadioButton
+                                                                        v-model="initialParentValues.mother_life_status"
+                                                                        inputId="motherstatuslive" name="motherstatus"
+                                                                        value="1" />
+                                                                    <label for="motherstatuslive">Live</label>
+                                                                </div>
+                                                                <div class="flex items-center gap-2">
+                                                                    <RadioButton
+                                                                        v-model="initialParentValues.mother_life_status"
+                                                                        inputId="motherstatusdie" name="monterstatus"
+                                                                        value="0" />
+                                                                    <label for="motherstatusdie">Die</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="flex flex-col gap-4 w-full">
+                                                            <IftaLabel class="w-full">
+                                                                <DatePicker id="motherdob" v-model="initialParentValues.mother_birth_year
+                                                                    " class="w-full" view="year" dateFormat="yy"
+                                                                    show-icon iconDisplay="input" />
+                                                                <label for="motherdob">Date Of
+                                                                    Birth</label>
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <Select id="motherethnicity" v-model="initialParentValues.mother_ethnicity
+                                                                    " :options="dropdownItems
+                                                                        " optionLabel="name" optionValue="code"
+                                                                    placeholder="Select One" class="w-full" />
+                                                                <label for="motherethnicity">Ethnicity</label>
+                                                            </IftaLabel>
+                                                            <IftaLabel class="w-full">
+                                                                <label for="motherjob">Job</label>
+                                                                <InputText id="motherjob" v-model="initialParentValues.mother_job
+                                                                    " type="text" class="w-full" />
+                                                            </IftaLabel>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="flex pt-6 justify-end w-full">
                                             <Button label="Next" icon="pi pi-arrow-right" iconPos="right" class="w-full"
                                                 @click="nextStep('2')" />
