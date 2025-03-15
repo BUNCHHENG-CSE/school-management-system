@@ -30,21 +30,13 @@ The **School Management System** is a comprehensive platform designed to streaml
 2. Install dependencies:
    ```sh
    npm install  # For frontend
-   composer install  # For Laravel backend
    ```
-3. Set up the database:
-   ```sh
-   # PostgreSQL example
-   psql -U postgres -c "CREATE DATABASE school_management;"
-   ```
-4. Configure environment variables:
+3. Configure environment variables:
    - Create a `.env` file with necessary configurations.
-5. Run the application:
+4. Run the application:
    ```sh
    npm run serve  # For frontend
-   php artisan serve  # For Laravel backend
    ```
-
 ## Contribution Guidelines
 - Fork the repository and create a feature branch.
 - Commit changes with clear messages.
@@ -55,5 +47,4 @@ This project is licensed under the **MIT License**.
 
 ## Contact & Support
 For any inquiries, please contact:
-- **Email**: support@rupp.edu.kh
-- **Website**: [www.rupp.edu.kh](http://www.rupp.edu.kh)
+- **Email**: support@tso.org
