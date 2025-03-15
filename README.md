@@ -29,13 +29,13 @@ The **School Management System** is a comprehensive platform designed to streaml
    ```
 2. Install dependencies:
    ```sh
-   npm install  # For frontend
+   npm install
    ```
 3. Configure environment variables:
    - Create a `.env` file with necessary configurations.
 4. Run the application:
    ```sh
-   npm run serve  # For frontend
+   npm run serve
    ```
 ## Contribution Guidelines
 - Fork the repository and create a feature branch.
