@@ -15,8 +15,6 @@ const scholarship_data = ref({
 })
 const default_scholarship_data = JSON.parse(JSON.stringify(scholarship_data.value))
 
-
-
 const onClickPreviousPage = () => {
     router.go(-1)
 }

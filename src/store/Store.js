@@ -97,3 +97,34 @@ export const useParentStore = defineStore("parent", {
         },
     },
 });
+
+export const useScholarshipStore = defineStore("scholarship", {
+    state: () => ({
+        scholarship: ref({
+            "id": 0,
+            "name": "",
+            "description": "",
+            "total": 0,
+            "budget": 0.00,
+            "sponsor_name": "",
+            "sponsor_telephone": "",
+        }),
+    }),
+    actions: {
+        setScholarshipData(newData) {
+            this.scholarship = newData;
+        },
+        resetScholarshipData() {
+            this.scholarship = {
+                "id": 0,
+                "name": "",
+                "description": "",
+                "total": 0,
+                "budget": 0.00,
+                "sponsor_name": "",
+                "sponsor_telephone": "",
+            };
+        },
+    },
+});
+

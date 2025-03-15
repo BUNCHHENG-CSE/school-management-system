@@ -25,8 +25,7 @@ const defaultStudentValuesSearch = JSON.parse(JSON.stringify(initialStudentValue
 const onFormSubmit = async () => {
     initialStudentValuesSearch.value.birth_date = formatStudentBirthDate(initialStudentValuesSearch.value.birth_date);
     const filteredValues = Object.fromEntries(
-        Object.entries(initialStudentValuesSearch.value)
-            .filter(([key, value]) => value !== null && value !== "")
+        Object.entries(initialStudentValuesSearch.value).filter(([key, value]) => value !== null && value !== "")
     );
     const params = new URLSearchParams(filteredValues).toString();
     console.log(params);
@@ -61,8 +60,9 @@ const formatStudentBirthDate = (brithdate) => {
     return brithdate;
 }
 const sendPrompt = (card_num) => {
-    router.push({path: '/studymanagement/student/studentinformation',state: { message: card_num }
-  });
+    router.push({
+        path: '/studymanagement/student/studentinformation', state: { message: card_num }
+    });
 };
 
 </script>
@@ -128,7 +128,7 @@ const sendPrompt = (card_num) => {
                                         </Toolbar>
 
                                         <DataTable ref="dt" v-model:selection="selectedstudents" :value="students"
-                                            dataKey="id" :paginator="showPaginator" :rows="10" :filters="filters"
+                                            dataKey="id" :paginator="showPaginator" :rows="10"
                                             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                             :rowsPerPageOptions="[5, 10, 25]"
                                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} students">

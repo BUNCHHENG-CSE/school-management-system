@@ -1,4 +1,5 @@
 import AppLayout from "@/layout/AppLayout.vue";
+import ScholarshipInformationLayout from "@/layout/scholarship/ScholarshipInformationLayout.vue";
 import StudentInformationLayout from "@/layout/student/StudentInformationLayout.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -44,7 +45,6 @@ const router = createRouter({
                             "@/views/studymanagement/student/StudentStudyAbroad.vue"
                         ),
                 },
-
                 {
                     path: "/studymanagement/scholarship/ScholarShipList",
                     name: "Scholarship",
@@ -54,7 +54,7 @@ const router = createRouter({
                         ),
                 },
                 {
-                    path: "/studymanagement/scholarship/scholarship-list",
+                    path: "/studymanagement/scholarship/scholarships-list",
                     name: "Scholarship",
                     component: () =>
                         import(
@@ -62,19 +62,11 @@ const router = createRouter({
                         ),
                 },
                 {
-                    path: "/studymanagement/scholarship/create-scholarship",
+                    path: "/studymanagement/scholarship/scholarships-creation",
                     name: "Create Scholarship",
                     component: () =>
                         import(
                             "@/views/studymanagement/scholarship/ScholarShipCreation.vue"
-                        ),
-                },
-                {
-                    path: "/studymanagement/scholarship/showmore-scholarship",
-                    name: "ShowMore Scholarship",
-                    component: () =>
-                        import(
-                            "@/views/studymanagement/scholarship/ScholarShipShowMore.vue"
                         ),
                 },
             ],
@@ -101,6 +93,28 @@ const router = createRouter({
                 },
             ],
         },
+        {
+            path: "/studymanagement/scholarship/scholarships-information",
+            component: ScholarshipInformationLayout,
+            children: [
+                {
+                    path: "/studymanagement/scholarship/scholarships-information",
+                    name: "Scholarship Information",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/scholarship/information/ScholarShipDetail.vue"
+                        ),
+                },
+                {
+                    path: "/studymanagement/scholarship/scholarships-edit",
+                    name: "Update Scholarship",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/scholarship/information/ScholarshipEdit.vue"
+                        ),
+                },
+            ] 
+        }
     ],
 });
 

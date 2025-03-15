@@ -31,13 +31,13 @@ const onSearch = () => {
 
 const onClickCreate = () => {
     router.push({
-        path: "create-scholarship",
+        path: "/studymanagement/scholarship/scholarships-creation",
     });
 };
 
 const onClickShow = (id) => {
     router.push({
-        path: "showmore-scholarship",
+        path: "/studymanagement/scholarship/scholarships-information",
         state: { 'id': id }
     });
 };
@@ -67,7 +67,7 @@ const onClickShow = (id) => {
                                 <InputText id="on_label" v-model="searchValue" />
                                 <label for="on_label">Search By Name</label>
                             </FloatLabel>
-                            <Button type="submit" label="Search" icon="pi pi-search" class="ml-5" />
+                            <Button type="submit" severity="info" label="Search" icon="pi pi-search" class="ml-5" />
                         </div>
                     </Form>
                 </template>
