@@ -11,12 +11,12 @@ import "@/assets/styles.scss";
 import "primeicons/primeicons.css";
 
 const app = createApp(App);
-const prefersDarkMode = localStorage.getItem("theme") || "dark";
-if (prefersDarkMode === "dark") {
-    document.documentElement.classList.add("app-dark");
-} else {
-    document.documentElement.classList.remove("app-dark");
-}
+// const prefersDarkMode = localStorage.getItem("theme") || "dark";
+// if (prefersDarkMode === "dark") {
+//     document.documentElement.classList.add("app-dark");
+// } else {
+//     document.documentElement.classList.remove("app-dark");
+// }
 
 const myPreset = definePreset(Aura, {
     semantic: {

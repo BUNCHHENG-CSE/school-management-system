@@ -38,6 +38,10 @@ const model = ref([
                             },
                         ],
                     },
+                    {
+                        label: "ScholarShip",
+                        to: "/studymanagement/scholarship/ScholarShipList",
+                    }
 
                 ],
             },

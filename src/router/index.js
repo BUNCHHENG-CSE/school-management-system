@@ -51,6 +51,14 @@ const router = createRouter({
                             "@/views/studymanagement/student/StudentInformation.vue"
                         ),
                 },
+                {
+                    path: "/studymanagement/scholarship/ScholarShipList",
+                    name: "Scholarship",
+                    component: () => 
+                        import(
+                            "@/views/studymanagement/scholarship/ScholarShipList.vue"
+                        ),
+                }
             ],
         },
     ],

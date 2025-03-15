@@ -90,6 +90,7 @@ const sendPrompt = (card_num) => {
                         </TabList>
                         <TabPanels>
                             <TabPanel value="0">
+                                
                                 <Form @submit="onFormSubmit">
                                     <div class="flex flex-row gap-4 justify-end">
                                         <IftaLabel>
@@ -114,6 +115,7 @@ const sendPrompt = (card_num) => {
                                             style="width: fit-content;" />
                                     </div>
                                 </Form>
+
                                 <div v-if="students.length">
                                     <div class="card">
                                         <Toolbar class="mb-6" style="border: none;">
