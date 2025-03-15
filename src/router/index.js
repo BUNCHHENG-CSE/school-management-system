@@ -113,7 +113,7 @@ const router = createRouter({
                             "@/views/studymanagement/scholarship/information/ScholarshipEdit.vue"
                         ),
                 },
-            ] 
+            ]
         }
     ],
 });
