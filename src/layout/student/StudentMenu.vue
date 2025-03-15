@@ -9,8 +9,8 @@ const model = ref([
         items: [
             { label: "Registered Major", to: "/studymanagement/student/studentinformation" },
             { label: "Update", to: "/studymanagement/student/updatestudentinformation" },
-            { label: "Study Result", to: "/" },
-            { label: "Documents support", to: "/" },
+            { label: "Study Result", to: "" },
+            { label: "Documents support", to: "" },
         ],
     },
 ]);

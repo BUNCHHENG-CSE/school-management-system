@@ -3,14 +3,17 @@ import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
+import { useStudentStore, useParentStore } from "@/store/Store";
 import axios from "axios";
-import StudentInformation from "./StudentInformation.vue";
+
 
 const toast = useToast();
 const dt = ref(null);
 const students = ref([]);
 const selectedstudents = ref();
 const router = useRouter();
+const storeStudent = useStudentStore();
+const storeParent = useParentStore();
 const showPaginator = computed(() => students.value.length > 10);
 const initialStudentValuesSearch = ref({
     stu_card: "",
@@ -33,9 +36,7 @@ const onFormSubmit = async () => {
     const response = await axios.get(`http://localhost:8888/api/v1/students/search?${params}`)
         .then(response => {
             if (response.status === 200) {
-                // console.log(response.data.data);
-                students.value = response.data.data;
-
+                students.value = response.data.data
                 toast.add({
                     severity: "success",
                     summary: "Search Success",
@@ -61,8 +62,11 @@ const formatStudentBirthDate = (brithdate) => {
     return brithdate;
 }
 const sendPrompt = (card_num) => {
-    router.push({path: '/studymanagement/student/studentinformation',state: { message: card_num }
-  });
+    storeStudent.resetStudentData();
+    storeParent.resetParentData();
+    router.push({
+        path: '/studymanagement/student/studentinformation', state: { message: card_num }
+    });
 };
 
 </script>
