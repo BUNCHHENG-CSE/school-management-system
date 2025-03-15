@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-
+import { createPinia } from "pinia";
 import Aura from "@primeuix/themes/aura";
 import PrimeVue from "primevue/config";
 import ConfirmationService from "primevue/confirmationservice";
@@ -11,6 +11,7 @@ import "@/assets/styles.scss";
 import "primeicons/primeicons.css";
 
 const app = createApp(App);
+const pinia = createPinia();
 // const prefersDarkMode = localStorage.getItem("theme") || "dark";
 // if (prefersDarkMode === "dark") {
 //     document.documentElement.classList.add("app-dark");
@@ -66,6 +67,7 @@ const myPreset = definePreset(Aura, {
     },
 });
 
+app.use(pinia);
 app.use(router);
 app.use(PrimeVue, {
     theme: {

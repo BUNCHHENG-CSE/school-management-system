@@ -1,4 +1,5 @@
 import AppLayout from "@/layout/AppLayout.vue";
+import StudentInformationLayout from "@/layout/student/StudentInformationLayout.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -43,8 +44,22 @@ const router = createRouter({
                             "@/views/studymanagement/student/StudentStudyAbroad.vue"
                         ),
                 },
+
                 {
-                    path: "/studymanagement/student/studentinformation",
+                    path: "/studymanagement/scholarship/ScholarShipList",
+                    name: "Scholarship",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/scholarship/ScholarShipList.vue"
+                        ),
+                }
+            ],
+        },
+        {
+            path: "/studymanagement/student/studentinformation",
+            component:StudentInformationLayout,
+            children:[
+                { path: "/studymanagement/student/studentinformation",
                     name: "Student Information",
                     component: () =>
                         import(
@@ -52,14 +67,16 @@ const router = createRouter({
                         ),
                 },
                 {
-                    path: "/studymanagement/scholarship/ScholarShipList",
-                    name: "Scholarship",
-                    component: () => 
+                    path: "/studymanagement/student/updatestudentinformation",
+                    name: "Update Student Information",
+                    component: () =>
                         import(
-                            "@/views/studymanagement/scholarship/ScholarShipList.vue"
+                            "@/views/studymanagement/student/UpdateStudentInformation.vue"
                         ),
                 }
-            ],
+            ]
+
+
         },
     ],
 });

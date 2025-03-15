@@ -1,33 +1,54 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
-const { cardNum } = defineProps(['cardNum']);
-const card_num = ref(cardNum);
+import { useStudentStore, useParentStore } from "@/store/Store";
 
 
-const response = await axios.get(`http://localhost:8888/api/v1/students/${card_num.value}`)
-    .then(response => {
-        if (response.status === 200) {
-            console.log(response.data.data);
-        }
-    }).catch(error => {
-        console.log(error.message);
-        //alert("Registration failed. Please try again.");
-    });
-console.log(response);
+const studentDetails = ref({
+});
+const storeStudent = useStudentStore();
+const storeParent = useParentStore();
+onMounted(async () => {
+    await axios.get(`http://localhost:8888/api/v1/students/${history.state?.message}`)
+        .then(response => {
+            if (response.status === 200) {
+                studentDetails.value = response.data.data;
+                storeStudent.setStudentData(studentDetails.value);
+                storeParent.setParentData(studentDetails.value.parent);
+            }
+        }).catch(error => {
+            console.log(error.message);
+            // alert("Registration failed. Please try again.");
+        });
+});
 </script>
 
 <template>
-    <Fluid class="flex flex-row gap-8">
+    <Fluid class="flex flex-row mb-5">
         <div class="w-full">
-            <div class="flex flex-row gap-8">
-                <div class="w-full">
-                    <div class="card">
-                        <h5>Coming Soon ...</h5>
-
+            <div class="card" style="padding: 1rem 2rem 0.3rem 2rem;">
+                <h5>Student Information : {{ studentDetails.first_name_en }} , Card Number: {{ studentDetails.card_num
+                    }} </h5>
+            </div>
+        </div>
+    </Fluid>
+    <Fluid class="flex flex-row gap-8">
+        <div class="w-full ">
+            <div class="card">
+                <div>
+                    <h5>Student Information</h5>
+                    <div v-if="loading">Loading...</div>
+                    <div v-else-if="studentDetails && Object.keys(studentDetails).length">
+                        <p><strong>Card Number:</strong> {{ studentDetails.card_num }}</p>
+                        <p><strong>Name EN:</strong> {{ studentDetails.first_name_en }}</p>
+                        <p><strong>Name KH:</strong> {{ studentDetails.full_name_kh }}</p>
+                        <p><strong>Degree Number:</strong> {{ studentDetails.degree_num }}</p>
+                        <p><strong>Gender : {{ studentDetails.gender }}</strong></p>
                     </div>
+                    <div v-else>No student details found.</div>
                 </div>
             </div>
         </div>
     </Fluid>
+
 </template>

@@ -10,7 +10,6 @@ const toast = useToast();
 const dt = ref(null);
 const students = ref([]);
 const selectedstudents = ref();
-const prompt = ref("");
 const router = useRouter();
 const showPaginator = computed(() => students.value.length > 10);
 const initialStudentValuesSearch = ref({
@@ -62,8 +61,8 @@ const formatStudentBirthDate = (brithdate) => {
     return brithdate;
 }
 const sendPrompt = (card_num) => {
-    prompt.value = card_num;
-    router.push('/studymanagement/student/studentinformation');
+    router.push({path: '/studymanagement/student/studentinformation',state: { message: card_num }
+  });
 };
 
 </script>
@@ -90,7 +89,7 @@ const sendPrompt = (card_num) => {
                         </TabList>
                         <TabPanels>
                             <TabPanel value="0">
-                                
+
                                 <Form @submit="onFormSubmit">
                                     <div class="flex flex-row gap-4 justify-end">
                                         <IftaLabel>
@@ -148,9 +147,7 @@ const sendPrompt = (card_num) => {
                                             </Column>
                                             <Column class="w-24 !text-end">
                                                 <template #body="{ data }">
-                                                    <Button icon="pi pi-search" @click="sendPrompt(data.card_num)"
-                                                        severity="secondary" rounded />
-
+                                                    <Button icon="pi pi-search" @click="sendPrompt(data.card_num)" />
                                                 </template>
                                             </Column>
                                         </DataTable>
@@ -181,11 +178,4 @@ const sendPrompt = (card_num) => {
             </div>
         </div>
     </Fluid>
-
-    <template>
-
-        <StudentInformation v-if="prompt" :cardNum="prompt" />
-    </template>
-
-
 </template>
