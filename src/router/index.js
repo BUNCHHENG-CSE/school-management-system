@@ -52,14 +52,39 @@ const router = createRouter({
                         import(
                             "@/views/studymanagement/scholarship/ScholarShipList.vue"
                         ),
-                }
+                },
+                {
+                    path: "/studymanagement/scholarship/scholarship-list",
+                    name: "Scholarship",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/scholarship/ScholarShipList.vue"
+                        ),
+                },
+                {
+                    path: "/studymanagement/scholarship/create-scholarship",
+                    name: "Create Scholarship",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/scholarship/ScholarShipCreation.vue"
+                        ),
+                },
+                {
+                    path: "/studymanagement/scholarship/showmore-scholarship",
+                    name: "ShowMore Scholarship",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/scholarship/ScholarShipShowMore.vue"
+                        ),
+                },
             ],
         },
         {
             path: "/studymanagement/student/studentinformation",
-            component:StudentInformationLayout,
-            children:[
-                { path: "/studymanagement/student/studentinformation",
+            component: StudentInformationLayout,
+            children: [
+                {
+                    path: "/studymanagement/student/studentinformation",
                     name: "Student Information",
                     component: () =>
                         import(
@@ -73,10 +98,8 @@ const router = createRouter({
                         import(
                             "@/views/studymanagement/student/UpdateStudentInformation.vue"
                         ),
-                }
-            ]
-
-
+                },
+            ],
         },
     ],
 });

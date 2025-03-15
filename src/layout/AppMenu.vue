@@ -40,7 +40,7 @@ const model = ref([
                     },
                     {
                         label: "ScholarShip",
-                        to: "/studymanagement/scholarship/ScholarShipList",
+                        to: "/studymanagement/scholarship/scholarship-list",
                     }
 
                 ],
