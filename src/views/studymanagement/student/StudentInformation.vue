@@ -28,8 +28,7 @@ onMounted(async () => {
     <Fluid class="flex flex-row mb-5">
         <div class="w-full">
             <div class="card" style="padding: 1rem 2rem 0.3rem 2rem;">
-                <h5>Student Information : {{ storeStudent.student.first_name_en }} , Card Number: {{
-                    storeStudent.student.card_num
+                <h5>Student Information : {{ storeStudent.student.first_name_en }} , Card Number: {{ storeStudent.student.card_num
                     }} </h5>
             </div>
         </div>
