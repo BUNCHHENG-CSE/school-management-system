@@ -31,11 +31,9 @@ The **School Management System** is a comprehensive platform designed to streaml
    ```sh
    npm install
    ```
-3. Configure environment variables:
-   - Create a `.env` file with necessary configurations.
-4. Run the application:
+3. Run the application:
    ```sh
-   npm run serve
+   npm run dev
    ```
 ## Contribution Guidelines
 - Fork the repository and create a feature branch.
