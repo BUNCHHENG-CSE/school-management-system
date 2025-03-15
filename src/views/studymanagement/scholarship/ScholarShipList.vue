@@ -50,8 +50,8 @@ const onClickShow = (id) => {
     <div>
         <Fluid class="flex flex-row mb-5">
             <div class="w-full">
-                <div class="card" style="padding: 1rem 2rem 0.3rem 2rem">
-                    <h5>Scholarship Management</h5>
+                <div class="card" style="padding: 1.5rem">
+                    <h5 class="m-0">Scholarship Management</h5>
                 </div>
             </div>
         </Fluid>
