@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import router from '@/router';
 import { useStudentStore, useParentStore } from "@/store/Store";
 
 
@@ -22,15 +23,25 @@ onMounted(async () => {
             // alert("Registration failed. Please try again.");
         });
 });
+const onClickPreviousPage = () => {
+    router.go(-1);
+}
 </script>
 
 <template>
     <Fluid class="flex flex-row mb-5">
         <div class="w-full">
-            <div class="card" style="padding: 1rem 2rem 0.3rem 2rem;">
-                <h5>Student Information : {{ storeStudent.student.first_name_en }} , Card Number: {{ storeStudent.student.card_num
-                    }} </h5>
+            <div class="card flex justify-between" style="padding: 1rem 2rem 0.3rem 2rem;">
+                <div>
+                    <h5>Student Information :&nbsp; {{ storeStudent.student.first_name_en }} &nbsp; |&nbsp; Card Number:&nbsp; {{
+                        storeStudent.student.card_num }} </h5>
+                </div>
+                <div>
+                    <Button icon="pi pi-times" severity="danger" aria-label="Cancel" @click="onClickPreviousPage" />
+                </div>
+
             </div>
+
         </div>
     </Fluid>
     <Fluid class="flex flex-row gap-8">

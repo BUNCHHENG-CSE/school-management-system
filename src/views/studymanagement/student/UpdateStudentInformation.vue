@@ -3,16 +3,18 @@ import { ref } from "vue";
 import { usePrimeVue } from "primevue/config";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
-import {useStudentStore,useParentStore} from "@/store/Store";
+import { useStudentStore, useParentStore } from "@/store/Store";
 const toast = useToast();
 const $primevue = usePrimeVue();
 const currentStep = ref("1");
 const studentStore = useStudentStore();
 const parentStore = useParentStore();
-console.log(studentStore.student);
-const initialStudentValues = ref({
+
+const initialStudentIdentityValues = ref({
     card_num: "",
     degree_num: "",
+})
+const initialStudentValues = ref({
     first_name_en: "",
     last_name_en: "",
     full_name_en: "",
@@ -30,7 +32,9 @@ const initialStudentValues = ref({
     job: "",
     telephone: "",
 });
-
+const initialParentIdentityValues = ref({
+    student_id: "",
+})
 const initialParentValues = ref({
     father_name: "",
     father_birth_year: "",
@@ -46,11 +50,15 @@ const initialParentValues = ref({
     mother_life_status: "",
     mother_job: "",
     mother_telephone: "",
-    student_id: "",
+
 })
 initialStudentValues.value = studentStore.student;
+initialStudentIdentityValues.value.card_num = studentStore.student.card_num;
+initialStudentIdentityValues.value.degree_num = studentStore.student.degree_num;
+
 initialParentValues.value = parentStore.parent;
-initialStudentValues.value.gender =  studentStore.student.gender.toString();
+initialParentIdentityValues.value.student_id = parentStore.parent.student_id;
+initialStudentValues.value.gender = studentStore.student.gender.toString();
 initialParentValues.value.father_life_status = Number(parentStore.parent.father_life_status).toString();
 initialParentValues.value.mother_life_status = Number(parentStore.parent.mother_life_status).toString();
 
@@ -79,11 +87,11 @@ const dropdownItemsprovince = ref([
 ]);
 const dropdownItemsnationality = ref([
     { name: "Khmer", code: "khmer" },
-    {name:"ខ្មែរ",code:"ខ្មែរ"}
+    { name: "ខ្មែរ", code: "ខ្មែរ" }
 ]);
 const dropdownItemsethnicity = ref([
     { name: "Khmer", code: "khmer" },
-    {name:"ខ្មែរ",code:"ខ្មែរ"}
+    { name: "ខ្មែរ", code: "ខ្មែរ" }
 ]);
 const onFormSubmit = async () => {
     initialStudentValues.value.full_name_en = initialStudentValues.value.first_name_en + " " + initialStudentValues.value.last_name_en;
@@ -91,9 +99,42 @@ const onFormSubmit = async () => {
     initialStudentValues.value.birth_date = formatStudentBirthDate(initialStudentValues.value.birth_date);
     initialParentValues.value.father_birth_year = formatParentBirthDate(initialParentValues.value.father_birth_year);
     initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParentValues.value.mother_birth_year);
-const response = await axios.put(`http://localhost:8888/api/v1/students/${studentStore.student.id}`, {
+    await axios.put(`http://localhost:8888/api/v1/students/${studentStore.student.card_num}`, initialStudentValues.value)
+        .then((response) => {
+            if (response.status === 202) {
+                axios.put(`http://localhost:8888/api/v1/parents/${parentStore.parent.student_id}`, initialParentValues.value).then((res) => {
+                    if (res.status === 202) {
+                        toast.add({
+                            severity: "success",
+                            summary: "Success",
+                            detail: "Student Information Updated",
+                            life: 3000,
+                        });
+                    }
+                }).catch((error) => {
+                    toast.add({
+                        severity: "error",
+                        summary: "Error",
+                        detail: "Student Information Update Failed",
+                        life: 3000,
+                    });
+                });
 
-    });
+            }
+            toast.add({
+                severity: "success",
+                summary: "Success",
+                detail: "Student Information Updated",
+                life: 3000,
+            });
+        }).catch((error) => {
+            toast.add({
+                severity: "error",
+                summary: "Error",
+                detail: "Student Information Update Failed",
+                life: 3000,
+            });
+        });
     currentStep.value = "1";
 };
 
@@ -174,16 +215,15 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                             <div>
                                                 <IftaLabel class="w-full mb-4">
                                                     <label for="phonenumber">Card Number</label>
-                                                    <InputText id="phonenumber" v-model="initialStudentValues.card_num
+                                                    <InputText id="phonenumber" v-model="initialStudentIdentityValues.card_num
                                                         " type="text" class="w-full" disabled />
                                                 </IftaLabel>
                                                 <Toast />
                                                 <FileUpload disabled name="demo[]" url="/api/upload" @upload="
                                                     onTemplatedUpload
-                                                " :multiple="false" accept="image/*" :maxFileSize="1000000"
-                                                    @select="
-                                                        onSelectedFiles
-                                                    ">
+                                                " :multiple="false" accept="image/*" :maxFileSize="1000000" @select="
+                                                    onSelectedFiles
+                                                ">
                                                     <template #header="{
                                                         chooseCallback,
                                                         uploadCallback,
@@ -200,8 +240,8 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                                     uploadEvent(
                                                                         uploadCallback
                                                                     )
-                                                                    " icon="pi pi-cloud-upload" rounded
-                                                                    outlined severity="success" :disabled="!files ||
+                                                                    " icon="pi pi-cloud-upload" rounded outlined
+                                                                    severity="success" :disabled="!files ||
                                                                         files.length ===
                                                                         0
                                                                         "></Button>
@@ -234,8 +274,8 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                                     <img role="presentation" :alt="files[0]
                                                                         .name
                                                                         " :src="files[0]
-                                                                                    .objectURL
-                                                                                    " width="100" height="50" />
+                                                                            .objectURL
+                                                                            " width="100" height="50" />
                                                                     <span
                                                                         class="font-semibold text-ellipsis max-w-60 overflow-hidden">{{
                                                                             files[0]
@@ -270,8 +310,8 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                                     <img role="presentation" :alt="uploadedFiles[0]
                                                                         .name
                                                                         " :src="uploadedFiles[0]
-                                                                                    .objectURL
-                                                                                    " width="100" height="50" />
+                                                                            .objectURL
+                                                                            " width="100" height="50" />
                                                                     <span
                                                                         class="font-semibold text-ellipsis max-w-60 overflow-hidden">{{
                                                                             uploadedFiles[0]
@@ -328,7 +368,7 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                 <div class="flex flex-col gap-4 w-full">
                                                     <IftaLabel class="w-full">
                                                         <label for="phonenumber">Degree Number</label>
-                                                        <InputText id="phonenumber" v-model="initialStudentValues.degree_num
+                                                        <InputText id="phonenumber" v-model="initialStudentIdentityValues.degree_num
                                                             " type="text" class="w-full" disabled />
                                                     </IftaLabel>
                                                     <IftaLabel class="w-full">
@@ -372,7 +412,7 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                     <IftaLabel class="w-full">
                                                         <Select id="nationality" v-model="initialStudentValues.nationality
                                                             " :options="dropdownItemsnationality
-                                                                        " optionLabel="name" optionValue="code"
+                                                                " optionLabel="name" optionValue="code"
                                                             placeholder="Select One" class="w-full" />
                                                         <label for="nationality">Nationality</label>
                                                     </IftaLabel>
@@ -426,7 +466,7 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                     <IftaLabel class="w-full">
                                                         <Select id="pob" v-model="initialStudentValues.ethnicity
                                                             " :options="dropdownItemsethnicity
-                                                                        " optionLabel="name" optionValue="code"
+                                                                " optionLabel="name" optionValue="code"
                                                             placeholder="Select One" class="w-full" />
                                                         <label for="pob">Ethnicity</label>
                                                     </IftaLabel>
@@ -444,7 +484,7 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                             <IftaLabel class="w-full">
                                                                 <Select id="highschoolprovince" v-model="initialStudentValues.highschoolprovince
                                                                     " :options="dropdownItemsprovince
-                                                                                " optionLabel="name" optionValue="code"
+                                                                        " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full" disabled
                                                                     style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" />
                                                                 <label for="highschoolprovince">Province</label>
@@ -469,7 +509,7 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                             <IftaLabel class="w-full">
                                                                 <Select id="currprovince" v-model="initialStudentValues.address_province
                                                                     " :options="dropdownItemsprovince
-                                                                                " optionLabel="name" optionValue="code"
+                                                                        " optionLabel="name" optionValue="code"
                                                                     placeholder="Select One" class="w-full"
                                                                     style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" />
                                                                 <label for="currprovince">Province</label>
@@ -514,7 +554,7 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                     <IftaLabel class="w-full">
                                                         <Select id="fathernationality" v-model="initialParentValues.father_nationality
                                                             " :options="dropdownItemsnationality
-                                                                        " optionLabel="name" optionValue="code"
+                                                                " optionLabel="name" optionValue="code"
                                                             placeholder="Select One" class="w-full" />
                                                         <label for="fathernationality">Nationality</label>
                                                     </IftaLabel>
@@ -546,15 +586,15 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                 <div class="flex flex-col gap-4 w-full">
                                                     <IftaLabel class="w-full">
                                                         <DatePicker id="fatherdob" v-model="initialParentValues.father_birth_year
-                                                            " class="w-full" view="year" dateFormat="yy"
-                                                            show-icon iconDisplay="input" />
+                                                            " class="w-full" view="year" dateFormat="yy" show-icon
+                                                            iconDisplay="input" />
                                                         <label for="fatherdob">Date Of
                                                             Birth</label>
                                                     </IftaLabel>
                                                     <IftaLabel class="w-full">
                                                         <Select id="fatherethnicity" v-model="initialParentValues.father_ethnicity
                                                             " :options="dropdownItemsethnicity
-                                                                        " optionLabel="name" optionValue="code"
+                                                                " optionLabel="name" optionValue="code"
                                                             placeholder="Select One" class="w-full" />
                                                         <label for="fatherethnicity">Ethnicity</label>
                                                     </IftaLabel>
@@ -577,7 +617,7 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                     <IftaLabel class="w-full">
                                                         <Select id="mothernationality" v-model="initialParentValues.mother_nationality
                                                             " :options="dropdownItemsnationality
-                                                                        " optionLabel="name" optionValue="code"
+                                                                " optionLabel="name" optionValue="code"
                                                             placeholder="Select One" class="w-full" />
                                                         <label for="mothernationality">Nationality</label>
                                                     </IftaLabel>
@@ -609,15 +649,15 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                                                 <div class="flex flex-col gap-4 w-full">
                                                     <IftaLabel class="w-full">
                                                         <DatePicker id="motherdob" v-model="initialParentValues.mother_birth_year
-                                                            " class="w-full" view="year" dateFormat="yy"
-                                                            show-icon iconDisplay="input" />
+                                                            " class="w-full" view="year" dateFormat="yy" show-icon
+                                                            iconDisplay="input" />
                                                         <label for="motherdob">Date Of
                                                             Birth</label>
                                                     </IftaLabel>
                                                     <IftaLabel class="w-full">
                                                         <Select id="motherethnicity" v-model="initialParentValues.mother_ethnicity
                                                             " :options="dropdownItemsethnicity
-                                                                        " optionLabel="name" optionValue="code"
+                                                                " optionLabel="name" optionValue="code"
                                                             placeholder="Select One" class="w-full" />
                                                         <label for="motherethnicity">Ethnicity</label>
                                                     </IftaLabel>
