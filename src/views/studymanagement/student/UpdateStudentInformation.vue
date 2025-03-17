@@ -121,12 +121,6 @@ const onFormSubmit = async () => {
                 });
 
             }
-            toast.add({
-                severity: "success",
-                summary: "Success",
-                detail: "Student Information Updated",
-                life: 3000,
-            });
         }).catch((error) => {
             toast.add({
                 severity: "error",
@@ -693,6 +687,5 @@ initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParen
                 </Stepper>
             </div>
         </div>
-
     </Fluid>
 </template>
