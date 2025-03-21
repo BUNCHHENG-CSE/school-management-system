@@ -99,10 +99,10 @@ const onFormSubmit = async () => {
     initialStudentValues.value.birth_date = formatStudentBirthDate(initialStudentValues.value.birth_date);
     initialParentValues.value.father_birth_year = formatParentBirthDate(initialParentValues.value.father_birth_year);
     initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParentValues.value.mother_birth_year);
-    await axios.put(`http://localhost:8888/api/v1/students/${studentStore.student.card_num}`, initialStudentValues.value)
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/v1/students/${studentStore.student.card_num}`, initialStudentValues.value)
         .then((response) => {
             if (response.status === 202) {
-                axios.put(`http://localhost:8888/api/v1/parents/${parentStore.parent.student_id}`, initialParentValues.value).then((res) => {
+                axios.put(`${import.meta.env.VITE_API_URL}/api/v1/parents/${parentStore.parent.student_id}`, initialParentValues.value).then((res) => {
                     if (res.status === 202) {
                         toast.add({
                             severity: "success",

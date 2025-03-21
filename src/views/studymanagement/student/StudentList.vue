@@ -32,7 +32,7 @@ const onFormSubmit = async () => {
     );
     const params = new URLSearchParams(filteredValues).toString();
     console.log(params);
-    const response = await axios.get(`http://localhost:8888/api/v1/students/search?${params}`)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/students/search?${params}`)
         .then(response => {
             if (response.status === 200) {
                 students.value = response.data.data
@@ -64,7 +64,7 @@ const sendPrompt = (card_num) => {
     storeStudent.resetStudentData();
     storeParent.resetParentData();
     router.push({
-        path: '/studymanagement/student/studentinformation', state: { message: card_num }
+        path: '/studymanagement/student/student-information', state: { message: card_num }
     });
 };
 

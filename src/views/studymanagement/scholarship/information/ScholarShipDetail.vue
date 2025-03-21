@@ -16,7 +16,7 @@ onMounted(async () => {
 
     if (id.value !== undefined) {
         console.log("testin 1")
-        await axios.get(`http://localhost:8888/api/v1/scholarships/${id.value}`)
+        await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/scholarships/${id.value}`)
             .then((res) => {
                 useScholarship.setScholarshipData(res.data.data)
                 toast.add({

@@ -78,19 +78,17 @@ const dropdownItemsethnicity = ref([
 ]);
 const onFormSubmit = async () => {
 
-    // const response = await axios.get("http://localhost:8888/api/v1/students");
-    // console.log(response.data.id);
     initialStudentValues.value.full_name_en = initialStudentValues.value.first_name_en + " " + initialStudentValues.value.last_name_en;
     initialStudentValues.value.full_name_kh = initialStudentValues.value.first_name_kh + " " + initialStudentValues.value.last_name_kh;
     initialStudentValues.value.birth_date = formatStudentBirthDate(initialStudentValues.value.birth_date);
     initialParentValues.value.father_birth_year = formatParentBirthDate(initialParentValues.value.father_birth_year);
     initialParentValues.value.mother_birth_year = formatParentBirthDate(initialParentValues.value.mother_birth_year);
 
-    const response = await axios.post("http://localhost:8888/api/v1/students", initialStudentValues.value)
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/students`, initialStudentValues.value)
         .then(response => {
             if (response.status === 201) {
                 initialParentValues.value.student_id = response.data.data.id;
-                const res = axios.post("http://localhost:8888/api/v1/parents", initialParentValues.value)
+                const res = axios.post(`${import.meta.env.VITE_API_URL}/api/v1/parents`, initialParentValues.value)
                     .then(res => {
                         console.log(res.data);
                         if (res.status === 201) {
@@ -177,7 +175,6 @@ const formatParentBirthDate = (brithdate) => {
                         <Step value="1">Student Info.</Step>
                         <Step value="2">Summary Info</Step>
                     </StepList>
-
                     <Form @submit="onFormSubmit">
                         <StepPanels>
                             <StepPanel value="1" class="p-4">

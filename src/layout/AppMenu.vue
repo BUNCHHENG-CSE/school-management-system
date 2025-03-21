@@ -23,7 +23,6 @@ const model = ref([
             },
             {
                 label: "Study Management",
-                to: "/pages",
                 items: [
                     {
                         label: "Student",
@@ -45,7 +44,15 @@ const model = ref([
 
                 ],
             },
-
+            {
+                label: "Administration management",
+                items: [
+                    {
+                        label: "Study Year",
+                        to: "/administrationmanagement/studyyear/studyyear-list",
+                    }
+                ],
+            },
         ],
     },
 ]);

@@ -68,27 +68,34 @@ const router = createRouter({
                         import(
                             "@/views/studymanagement/scholarship/ScholarShipCreation.vue"
                         ),
+                },{
+                    path: "/administrationmanagement/studyyear/studyyear-list",
+                    name: "Study Year",
+                    component: () =>
+                        import(
+                            "@/views/admintstratormanagement/StudyYearList.vue"
+                        ),
                 },
             ],
         },
         {
-            path: "/studymanagement/student/studentinformation",
+            path: "/studymanagement/student/student-information",
             component: StudentInformationLayout,
             children: [
                 {
-                    path: "/studymanagement/student/studentinformation",
+                    path: "/studymanagement/student/information/student-information",
                     name: "Student Information",
                     component: () =>
                         import(
-                            "@/views/studymanagement/student/StudentInformation.vue"
+                            "@/views/studymanagement/student/information/StudentInformation.vue"
                         ),
                 },
                 {
-                    path: "/studymanagement/student/updatestudentinformation",
+                    path: "/studymanagement/student/student-edit",
                     name: "Update Student Information",
                     component: () =>
                         import(
-                            "@/views/studymanagement/student/UpdateStudentInformation.vue"
+                            "@/views/studymanagement/student/information/UpdateStudentInformation.vue"
                         ),
                 },
             ],

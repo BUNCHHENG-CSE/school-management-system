@@ -11,7 +11,7 @@ const storeStudent = useStudentStore();
 const storeParent = useParentStore();
 
 onMounted(async () => {
-    await axios.get(`http://localhost:8888/api/v1/students/${history.state?.message}`)
+    await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/students/${history.state?.message}`)
         .then(response => {
             if (response.status === 200) {
                 studentDetails.value = response.data.data;

@@ -5,7 +5,7 @@ import router from "@/router";
 
 onMounted(() => {
     axios
-        .get("http://localhost:8888/api/v1/scholarships")
+        .get(`${import.meta.env.VITE_API_URL}/api/v1/scholarships`)
         .then((response) => {
             if (response.status === 200) {
                 scholarships.value = response.data.data;
