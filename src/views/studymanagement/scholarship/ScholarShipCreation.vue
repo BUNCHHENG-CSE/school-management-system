@@ -41,7 +41,7 @@ const onSubmitCreateScholarship = () => {
         console.log("submit")
         scholarship_data.value.budget = scholarship_data.value.budget.toFixed(2);
         console.log(scholarship_data.value)
-        axios.post(`${import.meta.env.VITE_API_URL}/api/v1/scholarships`, scholarship_data.value).then((res) => {
+        axios.post(`${import.meta.env.VITE_API_URL || process.env.VITE_API_URL}/api/v1/scholarships`, scholarship_data.value).then((res) => {
             if (res.status === 201) {
                 toast.add({
                     severity: "success",
