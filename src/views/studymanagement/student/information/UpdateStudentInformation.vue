@@ -1,9 +1,11 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { usePrimeVue } from "primevue/config";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
 import { useStudentStore, useParentStore } from "@/store/Store";
+import router from "@/router";
+
 const toast = useToast();
 const $primevue = usePrimeVue();
 const currentStep = ref("1");
@@ -52,6 +54,8 @@ const initialParentValues = ref({
     mother_telephone: "",
 
 })
+
+
 initialStudentValues.value = studentStore.student;
 initialStudentIdentityValues.value.card_num = studentStore.student.card_num;
 initialStudentIdentityValues.value.degree_num = studentStore.student.degree_num;
@@ -93,6 +97,12 @@ const dropdownItemsethnicity = ref([
     { name: "Khmer", code: "khmer" },
     { name: "ខ្មែរ", code: "ខ្មែរ" }
 ]);
+
+onMounted(() => {
+    if (studentStore.student.card_num <= 0) {
+        router.go(-1)
+    }
+})
 const onFormSubmit = async () => {
     initialStudentValues.value.full_name_en = initialStudentValues.value.first_name_en + " " + initialStudentValues.value.last_name_en;
     initialStudentValues.value.full_name_kh = initialStudentValues.value.first_name_kh + " " + initialStudentValues.value.last_name_kh;

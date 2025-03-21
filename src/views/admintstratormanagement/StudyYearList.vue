@@ -9,9 +9,9 @@ import axios from "axios";
 const toast = useToast();
 const dt = ref(null);
 const selectedstudents = ref();
+const academicyears = ref([]);
 const router = useRouter();
-const showPaginator = computed(() => students.value.length > 10);
-const academicyears = ref();
+const showPaginator = computed(() => academicyears.value.length > 0);
 const dropdownItemsYear = ref([
     { name: "Year 1", code: "year1" },
     { name: "Year 2", code: "year2" },
@@ -31,13 +31,24 @@ const onFormSubmit = async () => {
 };
 
 
-// const sendPrompt = (card_num) => {
+const sendPrompt = (id) => {
 
-//     router.push({
-//         path: '/studymanagement/student/student-information', state: { message: card_num }
-//     });
-// };
+    router.push({
+        path: '/administratormanagement/academicyearinformation/academic-year-information', state: { 'id': id }
+    });
+};
+const getStatusLabel = (status) => {
+    switch (status) {
+        case true:
+            return 'success';
 
+        case false:
+            return 'warn';
+
+        default:
+            return null;
+    }
+};
 </script>
 
 <template>
@@ -73,80 +84,25 @@ const onFormSubmit = async () => {
                         </div>
                     </Form>
                 </div>
-                <!-- <div>
-                    <div v-if="students.length">
-                        <div class="card">
-                            <Toolbar class="mb-6" style="border: none;">
-                                <template #end>
-                                    <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import"
-                                        customUpload chooseLabel="Import" class="mr-2" auto
-                                        :chooseButtonProps="{ severity: 'secondary' }" />
-                                    <Button label="Export" icon="pi pi-upload" severity="secondary"
-                                        @click="exportCSV($event)" />
-                                </template>
-</Toolbar>
-
-<DataTable ref="dt" v-model:selection="selectedstudents" :value="students" dataKey="id" :paginator="showPaginator"
-    :rows="10"
-    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-    :rowsPerPageOptions="[5, 10, 25]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} students">
-    <template #header>
-                                    <div class="flex flex-wrap gap-2 items-center justify-between">
-                                        <h4 class="m-0">Student </h4>
-                                    </div>
-                                </template>
-    <Column field="card_num" header="Card Number" style="min-width: 12rem">
-    </Column>
-    <Column field="full_name_en" header="Name En" style="min-width: 16rem">
-    </Column>
-    <Column field="full_name_kh" header="Name KH" style="min-width: 8rem">
-    </Column>
-    <Column field="degree_num" header="Degree Number" style="min-width: 10rem">
-    </Column>
-    <Column class="w-24 !text-end">
-        <template #body="{ data }">
-                                        <Button icon="pi pi-search" @click="sendPrompt(data.card_num)" />
-                                    </template>
-    </Column>
-</DataTable>
-
-</div>
-</div>
-<div v-else>
-    <div class="card text-center">
-
-        <h5> No student available</h5>
-    </div>
-</div>
-</div> -->
-                <DataTable :value="academicyears" :frozenValue="lockedCustomers" scrollable scrollHeight="400px" :pt="{
-                    table: { style: 'min-width: 50rem' },
-                    bodyrow: ({ data }) => ({
-                        class: { 'font-bold': data.activate }
-                    })
-                }">
-
-                    <Column field="data.label" header="Name"></Column>
-                    <Column field="data.start_date" header="Country"></Column>
-                    <Column field="data.end_date" header="Representative"></Column>
-
-                    <!-- <Column field="data.activate" header="Status">
+                <DataTable :value="academicyears" :paginator="showPaginator" :rows="10" dataKey="id"
+                    style="margin-top: 20px;">
+                    <Column field="label" header="Name"></Column>
+                    <Column field="start_date" header="Start Date"></Column>
+                    <Column field="end_date" header="End Date"></Column>
+                    <Column field="activate" header="Activate" dataType="boolean" bodyClass="text-center"
+                        style="min-width: 8rem">
                         <template #body="{ data }">
-                            <span :class="statusClass(data.activate)">
-                                {{ data.activate ? 'Active' : 'Inactive' }}
-                            </span>
+                            <i class="pi"
+                                :class="{ 'pi-check-circle text-green-500 ': data.activate, 'pi-times-circle text-red-500': !data.activate }"></i>
+                        </template>
+
+                    </Column>
+                    <Column class="w-24 !text-end">
+                        <template #body="{ data }">
+                            <Button label="Show More"  @click="sendPrompt(data.id)" style="width: max-content;" />
                         </template>
                     </Column>
-
-                    <Column style="flex: 0 0 4rem">
-                        <template #body="{ data }">
-                            <Button type="button" :icon="lockIcon(data.activate)" text size="small"
-                                :disabled="!data.activate" />
-                        </template>
-                    </Column> -->
-
                 </DataTable>
-
             </div>
         </div>
     </Fluid>

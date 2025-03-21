@@ -5,12 +5,9 @@ import AppMenuItem from "../AppMenuItem.vue";
 
 const model = ref([
     {
-        label: "Student Information",
+        label: "Academic Year Information",
         items: [
-            { label: "Registered Major", to: "/studymanagement/student/information/student-information" },
-            { label: "Update", to: "/studymanagement/student/student-edit" },
-            { label: "Study Result", to: "" },
-            { label: "Documents support", to: "" },
+            { label: "Information", to: "/administratormanagement/academicyearinformation/academic-year-information" },
         ],
     },
 ]);

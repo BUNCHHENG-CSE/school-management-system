@@ -15,7 +15,6 @@ onMounted(async () => {
     scholarship.value = useScholarship.scholarship
 
     if (id.value !== undefined) {
-        console.log("testin 1")
         await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/scholarships/${id.value}`)
             .then((res) => {
                 useScholarship.setScholarshipData(res.data.data)

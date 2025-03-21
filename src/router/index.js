@@ -1,3 +1,4 @@
+import AcademicYearsInformationLayout from "@/layout/AcademicYears/AcademicYearsInformationLayout.vue";
 import AppLayout from "@/layout/AppLayout.vue";
 import ScholarshipInformationLayout from "@/layout/scholarship/ScholarshipInformationLayout.vue";
 import StudentInformationLayout from "@/layout/student/StudentInformationLayout.vue";
@@ -121,7 +122,21 @@ const router = createRouter({
                         ),
                 },
             ]
-        }
+        }, {
+            path: "/administratormanagement/academicyearinformation/academic-year-information",
+            component: AcademicYearsInformationLayout,
+            children: [
+                {
+                    path: "/administratormanagement/academicyearinformation/academic-year-information",
+                    name: "Study Year Information",
+                    component: () =>
+                        import(
+                            "@/views/admintstratormanagement/academicyearinformation/AcademicYearInformation.vue"
+                        ),
+                },
+
+            ],
+        },
     ],
 });
 

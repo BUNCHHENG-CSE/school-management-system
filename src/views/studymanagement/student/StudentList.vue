@@ -22,7 +22,6 @@ const initialStudentValuesSearch = ref({
     birth_date: "",
 
 });
-
 const defaultStudentValuesSearch = JSON.parse(JSON.stringify(initialStudentValuesSearch.value));
 
 const onFormSubmit = async () => {
@@ -32,7 +31,7 @@ const onFormSubmit = async () => {
     );
     const params = new URLSearchParams(filteredValues).toString();
     console.log(params);
-    const response = await axios.get(`http://103.67.60.20:8888/api/v1/students/search?${params}`)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/students/search?${params}`)
         .then(response => {
             if (response.status === 200) {
                 students.value = response.data.data
@@ -46,10 +45,15 @@ const onFormSubmit = async () => {
             }
         }).catch(error => {
             console.log(error.message);
-            alert("Registration failed. Please try again.");
+            toast.add({
+                severity: "warn",
+                summary: "Warning",
+                detail: "Student Not found",
+                life: 3000,
+            });
         });
 };
-console.log(students.value);
+
 const formatStudentBirthDate = (brithdate) => {
     if (brithdate) {
         const date = new Date(brithdate);
@@ -61,10 +65,11 @@ const formatStudentBirthDate = (brithdate) => {
     return brithdate;
 }
 const sendPrompt = (card_num) => {
-    storeStudent.resetStudentData();
-    storeParent.resetParentData();
+    // storeParent.resetParentData();
+    // storeStudent.resetStudentData();
     router.push({
-        path: '/studymanagement/student/student-information', state: { message: card_num }
+        path: "/studymanagement/student/information/student-information",
+        state: { message: card_num }
     });
 };
 

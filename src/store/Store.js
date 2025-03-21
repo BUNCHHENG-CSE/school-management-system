@@ -3,6 +3,7 @@ import { ref } from "vue";
 export const useStudentStore = defineStore("student", {
     state: () => ({
         student: ref({
+            id: 0,
             card_num: "",
             degree_num: "",
             first_name_en: "",
@@ -23,13 +24,13 @@ export const useStudentStore = defineStore("student", {
             telephone: "",
         }),
     }),
-
     actions: {
         setStudentData(newData) {
             this.student = newData;
         },
         resetStudentData() {
             this.student = {
+                id: 0,
                 card_num: "",
                 degree_num: "",
                 first_name_en: "",
@@ -101,13 +102,13 @@ export const useParentStore = defineStore("parent", {
 export const useScholarshipStore = defineStore("scholarship", {
     state: () => ({
         scholarship: ref({
-            "id": 0,
-            "name": "",
-            "description": "",
-            "total": 0,
-            "budget": 0.00,
-            "sponsor_name": "",
-            "sponsor_telephone": "",
+            id: 0,
+            name: "",
+            description: "",
+            total: 0,
+            budget: 0.0,
+            sponsor_name: "",
+            sponsor_telephone: "",
         }),
     }),
     actions: {
@@ -116,15 +117,39 @@ export const useScholarshipStore = defineStore("scholarship", {
         },
         resetScholarshipData() {
             this.scholarship = {
-                "id": 0,
-                "name": "",
-                "description": "",
-                "total": 0,
-                "budget": 0.00,
-                "sponsor_name": "",
-                "sponsor_telephone": "",
+                id: 0,
+                name: "",
+                description: "",
+                total: 0,
+                budget: 0.0,
+                sponsor_name: "",
+                sponsor_telephone: "",
             };
         },
     },
 });
-
+export const useAcademicYearStore = defineStore("academicyear", {
+    state: () => ({
+        academicyear: ref({
+            id: 0,
+            label: "",
+            start_date: "",
+            end_date: "",
+            activate: false,
+        }),
+    }),
+    actions: {
+        setAcademicYearData(newData) {
+            this.academicyear = newData;
+        },
+        resetAcademicYearData() {
+            this.academicyear = {
+                id: 0,
+                label: "",
+                start_date: "",
+                end_date: "",
+                activate: false,
+            };
+        },
+    },
+});
