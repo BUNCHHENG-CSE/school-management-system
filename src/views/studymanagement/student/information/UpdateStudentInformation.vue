@@ -35,7 +35,7 @@ const initialStudentValues = ref({
     telephone: "",
 });
 const initialParentIdentityValues = ref({
-    student_id: "",
+    id: 0,
 })
 const initialParentValues = ref({
     father_name: "",
@@ -61,7 +61,8 @@ initialStudentIdentityValues.value.card_num = studentStore.student.card_num;
 initialStudentIdentityValues.value.degree_num = studentStore.student.degree_num;
 
 initialParentValues.value = parentStore.parent;
-initialParentIdentityValues.value.student_id = parentStore.parent.student_id;
+console.log(parentStore.parent)
+initialParentIdentityValues.value.id = parentStore.parent.id;
 initialStudentValues.value.gender = studentStore.student.gender.toString();
 initialParentValues.value.father_life_status = Number(parentStore.parent.father_life_status).toString();
 initialParentValues.value.mother_life_status = Number(parentStore.parent.mother_life_status).toString();
@@ -112,7 +113,7 @@ const onFormSubmit = async () => {
     await axios.put(`${import.meta.env.VITE_API_URL}/api/v1/students/${studentStore.student.card_num}`, initialStudentValues.value)
         .then((response) => {
             if (response.status === 202) {
-                axios.put(`${import.meta.env.VITE_API_URL}/api/v1/parents/${parentStore.parent.student_id}`, initialParentValues.value).then((res) => {
+                axios.put(`${import.meta.env.VITE_API_URL}/api/v1/parents/${parentStore.parent.id}`, initialParentValues.value).then((res) => {
                     if (res.status === 202) {
                         toast.add({
                             severity: "success",

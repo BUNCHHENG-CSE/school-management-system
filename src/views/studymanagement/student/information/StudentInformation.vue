@@ -1,11 +1,12 @@
 <script setup>
 import router from '@/router';
-import { useStudentStore } from '@/store/Store';
+import { useStudentStore,useParentStore } from '@/store/Store';
 import axios from 'axios';
 import { useToast } from 'primevue';
 import { onMounted, ref } from 'vue';
 
 const storeStudent = useStudentStore();
+const storeParent = useParentStore();
 const toast = useToast();
 const card_num = ref();
 const students = ref([])
@@ -18,7 +19,7 @@ onMounted(async () => {
         await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/students/${card_num.value}`)
             .then((res) => {
                 storeStudent.setStudentData(res.data.data)
-                console.log(res.data.data)
+                storeParent.setParentData(res.data.data.parent)
                 toast.add({
                     severity: "success",
                     summary: "Success",

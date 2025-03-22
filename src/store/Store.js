@@ -56,15 +56,16 @@ export const useStudentStore = defineStore("student", {
 export const useParentStore = defineStore("parent", {
     state: () => ({
         parent: ref({
+            id:0,
             father_name: "",
-            //father_birth_year: "",
+            father_birth_year: "",
             father_nationality: "",
             father_ethnicity: "",
             father_life_status: "",
             father_job: "",
             father_telephone: "",
             mother_name: "",
-            // mother_birth_year: "",
+            mother_birth_year: "",
             mother_nationality: "",
             mother_ethnicity: "",
             mother_life_status: "",
@@ -79,6 +80,7 @@ export const useParentStore = defineStore("parent", {
         },
         resetParentData() {
             this.parent = {
+                id:0,
                 father_name: "",
                 father_birth_year: "",
                 father_nationality: "",
