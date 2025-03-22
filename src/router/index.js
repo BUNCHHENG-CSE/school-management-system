@@ -30,6 +30,7 @@ const router = createRouter({
                             "@/views/studentregisteration/ScholarshipStudent.vue"
                         ),
                 },
+                // Student Management
                 {
                     path: "/studymanagement/student/studentlist",
                     name: "Student List",
@@ -46,14 +47,57 @@ const router = createRouter({
                             "@/views/studymanagement/student/StudentStudyAbroad.vue"
                         ),
                 },
+                // Room Management
+                /**
+                 * Room Type
+                 */
                 {
-                    path: "/studymanagement/scholarship/ScholarShipList",
-                    name: "Scholarship",
+                    path: "/studymanagement/room-management/roomtypes-list",
+                    name: "Room Type List",
                     component: () =>
                         import(
-                            "@/views/studymanagement/scholarship/ScholarShipList.vue"
+                            "@/views/studymanagement/room-management/room-type/RoomTypList.vue"
                         ),
                 },
+                {
+                    path: "/studymanagement/room-management/roomtypes-creation",
+                    name: "Room Type Create",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/room-management/room-type/RoomTypeCreation.vue"
+                        ),
+                },
+                /**
+                 * Building
+                 */
+                {
+                    path: "/studymanagement/room-management/buildings-list",
+                    name: "Building List",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/room-management/building/BuildingList.vue"
+                        ),
+                },
+                {
+                    path: "/studymanagement/room-management/buildings-creation",
+                    name: "Building Create",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/room-management/building/BuildingCreation.vue"
+                        ),
+                },
+                /**
+                 * Room
+                 */
+                {
+                    path: "/studymanagement/room-management/rooms-list",
+                    name: "Room List",
+                    component: () =>
+                        import(
+                            "@/views/studymanagement/room-management/room/RoomList.vue"
+                        ),
+                },
+                // Scholarship Management
                 {
                     path: "/studymanagement/scholarship/scholarships-list",
                     name: "Scholarship",
@@ -69,7 +113,9 @@ const router = createRouter({
                         import(
                             "@/views/studymanagement/scholarship/ScholarShipCreation.vue"
                         ),
-                },{
+                },
+                // Study Year Management
+                {
                     path: "/administrationmanagement/studyyear/studyyear-list",
                     name: "Study Year",
                     component: () =>
@@ -122,7 +168,8 @@ const router = createRouter({
                         ),
                 },
             ]
-        }, {
+        },
+        {
             path: "/administratormanagement/academicyearinformation/academic-year-information",
             component: AcademicYearsInformationLayout,
             children: [

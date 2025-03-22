@@ -25,10 +25,10 @@ const model = ref([
                 label: "Study Management",
                 items: [
                     {
-                        label: "Student",
+                        label: "Student Management",
                         items: [
                             {
-                                label: "Student List",
+                                label: "Student",
                                 to: "/studymanagement/student/studentlist",
                             },
                             {
@@ -38,7 +38,24 @@ const model = ref([
                         ],
                     },
                     {
-                        label: "ScholarShip",
+                        label: "Room Management",
+                        items: [
+                            {
+                                label: "Room Type",
+                                to: "/studymanagement/room-management/roomtypes-list",
+                            },
+                            {
+                                label: "Building",
+                                to: "/studymanagement/room-management/buildings-list",
+                            },
+                            {
+                                label: "Room",
+                                to: "/studymanagement/room-management/rooms-list",
+                            }
+                        ]
+                    },
+                    {
+                        label: "Scholarship Management",
                         to: "/studymanagement/scholarship/scholarships-list",
                     }
 
