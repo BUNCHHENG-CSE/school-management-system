@@ -47,7 +47,7 @@ const redirect = () => {
 }
 
 const onClickPreviousPage = () => {
-    router.push("/studymanagement/scholarship/scholarships-list")
+    router.push("/studymanagement/student/studentlist")
 }
 
 </script>
