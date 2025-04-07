@@ -32,9 +32,8 @@ const onFormSubmit = async () => {
 
 
 const sendPrompt = (id) => {
-
     router.push({
-        path: '/administratormanagement/academicyearinformation/academic-year-information', state: { 'id': id }
+        path: '/administratormanagement/structuremanagement/academicyear-information', state: { 'id': id }
     });
 };
 const getStatusLabel = (status) => {

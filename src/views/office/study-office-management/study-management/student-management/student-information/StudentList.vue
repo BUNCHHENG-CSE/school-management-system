@@ -68,7 +68,7 @@ const sendPrompt = (card_num) => {
     // storeParent.resetParentData();
     // storeStudent.resetStudentData();
     router.push({
-        path: "/studymanagement/student/information/student-information",
+        path: "/studymanagement/student/student-information",
         state: { message: card_num }
     });
 };

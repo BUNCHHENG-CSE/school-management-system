@@ -16,11 +16,11 @@ const model = ref([
                         items: [
                             {
                                 label: "Paid Student",
-                                to: "/studentregistration/PaidStudent",
+                                to: "/registrationmangement/paid",
                             },
                             {
                                 label: "Scholarship Student",
-                                to: "/studentregistration/ScholarshipStudent",
+                                to: "/registrationmangement/scholarship",
                             },
                         ],
                     },
@@ -28,15 +28,11 @@ const model = ref([
                         label: "Study Management",
                         items: [
                             {
-                                label: "Student Information",
+                                label: "Student Management",
                                 items: [
                                     {
-                                        label: "Student Management",
-                                        to: "/studymanagement/student/studentlist",
-                                    },
-                                    {
-                                        label: "List Student Study Abroad",
-                                        to: "/studymanagement/student/studentstudyabroad",
+                                        label: "Student Information",
+                                        to: "/studymanagement/student/student-list",
                                     },
                                     {
                                         label: "Certificate Management",
@@ -125,7 +121,6 @@ const model = ref([
                                 label: "Scholarship Management",
                                 to: "/studymanagement/scholarship/scholarships-list",
                             }
-
                         ],
 
                     },
@@ -139,7 +134,7 @@ const model = ref([
                         items: [
                             {
                                 label: "Academic Year Management",
-                                to: "/administrationmanagement/studyyear/studyyear-list",
+                                to: "/administrationmanagement/academicyear/academicyear-list",
                             },
                             {
                                 label: "Degree Management",

@@ -168,12 +168,11 @@ const formatParentBirthDate = (brithdate) => {
 <template>
     <Fluid class="flex flex-row gap-8">
         <div class="w-full">
-
             <div class="card">
                 <Stepper :value="currentStep">
                     <StepList>
-                        <Step value="1">Student Info.</Step>
-                        <Step value="2">Summary Info</Step>
+                        <Step value="1"  @click="nextStep('1')" >Student Info.</Step>
+                        <Step value="2" @click="nextStep('2')">Summary Info</Step>
                     </StepList>
                     <Form @submit="onFormSubmit">
                         <StepPanels>
@@ -659,13 +658,10 @@ const formatParentBirthDate = (brithdate) => {
                                     <Button type="submit" label="Submit" />
                                 </div>
                             </StepPanel>
-
-
                         </StepPanels>
                     </Form>
                 </Stepper>
             </div>
         </div>
-
     </Fluid>
 </template>

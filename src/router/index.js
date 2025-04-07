@@ -17,34 +17,26 @@ const router = createRouter({
                     component: () => import("@/views/Dashboard.vue"),
                 },
                 {
-                    path: "/studentregistration/PaidStudent",
+                    path: "/registrationmangement/paid",
                     name: "Paid Student",
                     component: () =>
-                        import("@/views/studentregisteration/PaidStudent.vue"),
+                        import("@/views/office/study-office-management/registration-mangement/PaidStudent.vue"),
                 },
                 {
-                    path: "/studentregistration/ScholarshipStudent",
+                    path: "/registrationmangement/scholarship",
                     name: "Scholarship Student",
                     component: () =>
                         import(
-                            "@/views/studentregisteration/ScholarshipStudent.vue"
+                            "@/views/office/study-office-management/registration-mangement/ScholarshipStudent.vue"
                         ),
                 },
                 // Student Management
                 {
-                    path: "/studymanagement/student/studentlist",
+                    path: "/studymanagement/student/student-list",
                     name: "Student List",
                     component: () =>
                         import(
-                            "@/views/studymanagement/student/StudentList.vue"
-                        ),
-                },
-                {
-                    path: "/studymanagement/student/studentstudyabroad",
-                    name: "Student Study Abroad",
-                    component: () =>
-                        import(
-                            "@/views/studymanagement/student/StudentStudyAbroad.vue"
+                            "@/views/office/study-office-management/study-management/student-management/student-information/StudentList.vue"
                         ),
                 },
                 // Room Management
@@ -56,7 +48,7 @@ const router = createRouter({
                     name: "Room Type List",
                     component: () =>
                         import(
-                            "@/views/studymanagement/room-management/room-type/RoomTypList.vue"
+                            "@/views/office/study-office-management/study-management/room-management/room-type/RoomTypList.vue"
                         ),
                 },
                 {
@@ -64,7 +56,7 @@ const router = createRouter({
                     name: "Room Type Create",
                     component: () =>
                         import(
-                            "@/views/studymanagement/room-management/room-type/RoomTypeCreation.vue"
+                            "@/views/office/study-office-management/study-management/room-management/room-type/RoomTypeCreation.vue"
                         ),
                 },
                 /**
@@ -75,7 +67,7 @@ const router = createRouter({
                     name: "Building List",
                     component: () =>
                         import(
-                            "@/views/studymanagement/room-management/building/BuildingList.vue"
+                            "@/views/office/study-office-management/study-management/room-management/building/BuildingList.vue"
                         ),
                 },
                 {
@@ -83,7 +75,7 @@ const router = createRouter({
                     name: "Building Create",
                     component: () =>
                         import(
-                            "@/views/studymanagement/room-management/building/BuildingCreation.vue"
+                            "@/views/office/study-office-management/study-management/room-management/building/BuildingCreation.vue"
                         ),
                 },
                 /**
@@ -94,7 +86,7 @@ const router = createRouter({
                     name: "Room List",
                     component: () =>
                         import(
-                            "@/views/studymanagement/room-management/room/RoomList.vue"
+                            "@/views/office/study-office-management/study-management/room-management/room/RoomList.vue"
                         ),
                 },
                 // Scholarship Management
@@ -103,7 +95,7 @@ const router = createRouter({
                     name: "Scholarship",
                     component: () =>
                         import(
-                            "@/views/studymanagement/scholarship/ScholarShipList.vue"
+                            "@/views/office/study-office-management/study-management/scholarship-management/ScholarShipList.vue"
                         ),
                 },
                 {
@@ -111,16 +103,16 @@ const router = createRouter({
                     name: "Create Scholarship",
                     component: () =>
                         import(
-                            "@/views/studymanagement/scholarship/ScholarShipCreation.vue"
+                            "@/views/office/study-office-management/study-management/scholarship-management/ScholarShipCreation.vue"
                         ),
                 },
                 // Study Year Management
                 {
-                    path: "/administrationmanagement/studyyear/studyyear-list",
+                    path: "/administrationmanagement/structuremanagement/academicyear-list",
                     name: "Study Year",
                     component: () =>
                         import(
-                            "@/views/admintstratormanagement/StudyYearList.vue"
+                            "@/views/office/admintstrator-management/structure-management/academic-year-management/AcademicYearList.vue"
                         ),
                 },
             ],
@@ -130,11 +122,11 @@ const router = createRouter({
             component: StudentInformationLayout,
             children: [
                 {
-                    path: "/studymanagement/student/information/student-information",
+                    path: "/studymanagement/student/student-information",
                     name: "Student Information",
                     component: () =>
                         import(
-                            "@/views/studymanagement/student/information/StudentInformation.vue"
+                            "@/views/office/study-office-management/study-management/student-management/student-information/information/StudentInformation.vue"
                         ),
                 },
                 {
@@ -142,7 +134,7 @@ const router = createRouter({
                     name: "Update Student Information",
                     component: () =>
                         import(
-                            "@/views/studymanagement/student/information/UpdateStudentInformation.vue"
+                            "@/views/office/study-office-management/study-management/student-management/student-information/information/UpdateStudentInformation.vue"
                         ),
                 },
             ],
@@ -156,7 +148,7 @@ const router = createRouter({
                     name: "Scholarship Information",
                     component: () =>
                         import(
-                            "@/views/studymanagement/scholarship/information/ScholarShipDetail.vue"
+                            "@/views/office/study-office-management/study-management/scholarship-management/information/ScholarShipDetail.vue"
                         ),
                 },
                 {
@@ -164,21 +156,21 @@ const router = createRouter({
                     name: "Update Scholarship",
                     component: () =>
                         import(
-                            "@/views/studymanagement/scholarship/information/ScholarshipEdit.vue"
+                            "@/views/office/study-office-management/study-management/scholarship-management/information/ScholarshipEdit.vue"
                         ),
                 },
             ]
         },
         {
-            path: "/administratormanagement/academicyearinformation/academic-year-information",
+            path: "/administratormanagement/structuremanagement/academicyear-information",
             component: AcademicYearsInformationLayout,
             children: [
                 {
-                    path: "/administratormanagement/academicyearinformation/academic-year-information",
+                    path: "/administratormanagement/structuremanagement/academicyear-information",
                     name: "Study Year Information",
                     component: () =>
                         import(
-                            "@/views/admintstratormanagement/academicyearinformation/AcademicYearInformation.vue"
+                            "@/views/office/admintstrator-management/structure-management/academic-year-management/academic-year-information/AcademicYearInformation.vue"
                         ),
                 },
 
