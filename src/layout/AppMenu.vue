@@ -134,15 +134,15 @@ const model = ref([
                         items: [
                             {
                                 label: "Academic Year Management",
-                                to: "/administrationmanagement/academicyear/academicyear-list",
+                                to: "/administrationmanagement/structuremanagement/academicyear-list",
                             },
                             {
                                 label: "Degree Management",
-                                to: "",
+                                to: "/administrationmanagement/structuremanagement/degree-list",
                             },
                             {
                                 label: "Subject Management",
-                                to: "",
+                                to: "/administrationmanagement/structuremanagement/subject-list",
                             },
                             {
                                 label: "Class Management",

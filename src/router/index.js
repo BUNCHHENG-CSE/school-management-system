@@ -115,6 +115,25 @@ const router = createRouter({
                             "@/views/office/admintstrator-management/structure-management/academic-year-management/AcademicYearList.vue"
                         ),
                 },
+
+                // Degree Management
+                {
+                    path:"/administrationmanagement/structuremanagement/degree-list",
+                    name: "Degree",
+                    component: () =>
+                        import(
+                            "@/views/office/admintstrator-management/structure-management/degree-management/DegreeList.vue"
+                        ),
+                },
+                // Major Management
+                {
+                    path:"/administrationmanagement/structuremanagement/subject-list",
+                    name: "Subject",
+                    component: () =>
+                        import(
+                            "@/views/office/admintstrator-management/structure-management/subject-management/SubjectList.vue"
+                        ),
+                }
             ],
         },
         {
