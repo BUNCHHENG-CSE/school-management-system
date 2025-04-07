@@ -7,7 +7,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 
 <template>
     <div class="layout-topbar">
-        <div class="layout-topbar-logo-container">
+        <div class="layout-topbar-logo-container" >
             <button
                 class="layout-menu-button layout-topbar-action"
                 @click="toggleMenu"
@@ -17,7 +17,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
             <router-link to="/" class="layout-topbar-logo">
               <img src="/rupp_logo.png" alt="" class="w-8 h-8">
 
-                <span class="text-base">Royal University Of Phnom Penh</span>
+                <span class=" text-xl font-semibold">Royal University Of Phnom Penh</span>
             </router-link>
         </div>
 

@@ -9,65 +9,173 @@ const model = ref([
         items: [
             { label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" },
             {
-                label: "Student Registeration",
+                label: "Study Office Management",
                 items: [
                     {
-                        label: "Paid",
-                        to: "/studentregistration/PaidStudent",
-                    },
-                    {
-                        label: "Scholarship",
-                        to: "/studentregistration/ScholarshipStudent",
-                    },
-                ],
-            },
-            {
-                label: "Study Management",
-                items: [
-                    {
-                        label: "Student Management",
+                        label: "Registration Management",
                         items: [
                             {
-                                label: "Student",
-                                to: "/studymanagement/student/studentlist",
+                                label: "Paid Student",
+                                to: "/studentregistration/PaidStudent",
                             },
                             {
-                                label: "List Student Study Abroad",
-                                to: "/studymanagement/student/studentstudyabroad",
+                                label: "Scholarship Student",
+                                to: "/studentregistration/ScholarshipStudent",
                             },
                         ],
                     },
                     {
-                        label: "Room Management",
+                        label: "Study Management",
                         items: [
                             {
-                                label: "Room Type",
-                                to: "/studymanagement/room-management/roomtypes-list",
+                                label: "Student Information",
+                                items: [
+                                    {
+                                        label: "Student Management",
+                                        to: "/studymanagement/student/studentlist",
+                                    },
+                                    {
+                                        label: "List Student Study Abroad",
+                                        to: "/studymanagement/student/studentstudyabroad",
+                                    },
+                                    {
+                                        label: "Certificate Management",
+                                        to: "",
+                                    },
+                                    {
+                                        label: "ID Card Management",
+                                        to: "",
+                                    },
+                                ],
                             },
                             {
-                                label: "Building",
-                                to: "/studymanagement/room-management/buildings-list",
+                                label: "Study Result",
+                                items: [
+                                    {
+                                        label: "Re-exam List",
+                                        to: "",
+                                    },
+                                    {
+                                        label: "Ranking List",
+                                        to: "",
+                                    },
+                                    {
+                                        label: "Foundation List",
+                                        to: "",
+                                    },
+                                    {
+                                        label: "Attendent Table",
+                                        to: "",
+                                    },
+                                ],
                             },
                             {
-                                label: "Room",
-                                to: "/studymanagement/room-management/rooms-list",
+                                label: "Exam",
+                                items: [
+                                    {
+                                        label: "Exam Schedule",
+                                        to: "",
+                                    },
+                                ],
+                            },
+                            {
+                                label: "Class and Promote ",
+                                items: [
+                                    {
+                                        label: "Class Management",
+                                        to: "",
+                                    },
+                                ],
+                            },
+                            {
+                                label: "Schedule and Teaching Time",
+                                items: [
+                                    {
+                                        label: "Create Schedule",
+                                        to: "",
+                                    },
+                                    {
+                                        label: "Lecturer Schedule",
+                                        to: "",
+                                    },
+                                    {
+                                        label: "Teaching Request Time",
+                                        to: "",
+                                    },
+                                ],
+                            },
+                            {
+                                label: "Room Management",
+                                items: [
+                                    {
+                                        label: "Room Type",
+                                        to: "/studymanagement/room-management/roomtypes-list",
+                                    },
+                                    {
+                                        label: "Building",
+                                        to: "/studymanagement/room-management/buildings-list",
+                                    },
+                                    {
+                                        label: "Room",
+                                        to: "/studymanagement/room-management/rooms-list",
+                                    }
+                                ]
+                            },
+                            {
+                                label: "Scholarship Management",
+                                to: "/studymanagement/scholarship/scholarships-list",
                             }
-                        ]
-                    },
-                    {
-                        label: "Scholarship Management",
-                        to: "/studymanagement/scholarship/scholarships-list",
-                    }
 
+                        ],
+
+                    },
                 ],
             },
             {
                 label: "Administration management",
                 items: [
                     {
-                        label: "Study Year",
-                        to: "/administrationmanagement/studyyear/studyyear-list",
-                    }
+                        label: "Structure Management",
+                        items: [
+                            {
+                                label: "Academic Year Management",
+                                to: "/administrationmanagement/studyyear/studyyear-list",
+                            },
+                            {
+                                label: "Degree Management",
+                                to: "",
+                            },
+                            {
+                                label: "Subject Management",
+                                to: "",
+                            },
+                            {
+                                label: "Class Management",
+                                to: "",
+                            },
+                            {
+                                label: "Semester Management",
+                                to: "",
+                            },
+                        ],
+                    },
+                    {
+                        label: "Staff Management",
+                        to: "",
+                    },
+                    {
+                        label: "Lecturer Management",
+                        to: "",
+                    },
+                ],
+            },
+            {
+                label: "System User",
+                items: [
+                    {
+                        label: "Personal Information",
+                        to: "",
+                    },
                 ],
             },
         ],

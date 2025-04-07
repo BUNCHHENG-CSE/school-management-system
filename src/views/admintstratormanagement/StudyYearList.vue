@@ -70,6 +70,7 @@ const getStatusLabel = (status) => {
                                 <Select id="nationality" v-model="s
                                     " :options="dropdownItemsYear
                                         " optionLabel="name" optionValue="code" placeholder="Select One"
+                                        :showClear="true"
                                     class="w-full" />
                                 <label for="nationality">Year</label>
                             </IftaLabel>
@@ -77,10 +78,11 @@ const getStatusLabel = (status) => {
                                 <Select id="nationality" v-model="s
                                     " :options="dropdownItemsDegree
                                         " optionLabel="name" optionValue="code" placeholder="Select One"
+                                        :showClear="true"
                                     class="w-full" />
                                 <label for="nationality">Degree</label>
                             </IftaLabel>
-                            <Button type="submit" label="Search" icon="pi pi-search" />
+                            <!-- <Button type="submit" label="Search" icon="pi pi-search" hidden /> -->
                         </div>
                     </Form>
                 </div>
