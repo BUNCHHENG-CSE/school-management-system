@@ -178,8 +178,5 @@ const onClickShow = (id) => {
                 </div>
             </template>
         </Dialog>
-
-
-
     </div>
 </template>
