@@ -1,11 +1,28 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted,ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
 import axios from "axios";
 
-
+onMounted(() => {
+    axios
+        .get(`${import.meta.env.VITE_API_URL}/api/v1/academic-years`)
+        .then((response) => {
+            if (response.status === 200) {
+                academicyears.value = response.data.data;
+            }
+        })
+        .catch((error) => {
+            console.log(error.response);
+            toast.add({
+                severity: "warn",
+                summary: "Warning",
+                detail: "Academic found",
+                life: 3000,
+            });
+        });
+});
 const toast = useToast();
 const dt = ref(null);
 const selectedstudents = ref();
@@ -23,12 +40,12 @@ const dropdownItemsDegree = ref([
     { name: "Master", code: "master" },
     { name: "Doctor", code: "doctor" },
 ]);
-const onFormSubmit = async () => {
-    await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/academic-years`).then((response) => {
-        console.log(response.data.data);
-        academicyears.value = response.data.data;
-    });
-};
+// const onFormSubmit = async () => {
+//     await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/academic-years`).then((response) => {
+//         console.log(response.data.data);
+//         academicyears.value = response.data.data;
+//     });
+// };
 
 
 const sendPrompt = (id) => {

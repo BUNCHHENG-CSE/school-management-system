@@ -1,16 +1,17 @@
 <script setup>
-import router from '@/router';
-import { useStudentStore,useParentStore } from '@/store/Store';
+
+import { useStudentStore, useParentStore } from '@/store/Store';
 import axios from 'axios';
 import { useToast } from 'primevue';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const storeStudent = useStudentStore();
 const storeParent = useParentStore();
 const toast = useToast();
 const card_num = ref();
-const students = ref([])
-
+const students = ref([]);
+const router = useRouter();
 onMounted(async () => {
     card_num.value = history.state.message
     students.value = storeStudent.student

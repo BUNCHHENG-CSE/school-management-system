@@ -1,7 +1,9 @@
 import AcademicYearsInformationLayout from "@/layout/AcademicYears/AcademicYearsInformationLayout.vue";
 import AppLayout from "@/layout/AppLayout.vue";
 import ScholarshipInformationLayout from "@/layout/scholarship/ScholarshipInformationLayout.vue";
+import StaffInformationLayout from "@/layout/staff/StaffInformationLayout.vue";
 import StudentInformationLayout from "@/layout/student/StudentInformationLayout.vue";
+import StaffInformation from "@/views/office/admintstrator-management/staff-management/information/StaffInformation.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -14,13 +16,15 @@ const router = createRouter({
                 {
                     path: "/",
                     name: "dashboard",
-                    component: () => import("@/views/Dashboard.vue"),
+                    component: () => import("@/views/office/Dashboard.vue"),
                 },
                 {
                     path: "/registrationmangement/paid",
                     name: "Paid Student",
                     component: () =>
-                        import("@/views/office/study-office-management/registration-mangement/PaidStudent.vue"),
+                        import(
+                            "@/views/office/study-office-management/registration-mangement/PaidStudent.vue"
+                        ),
                 },
                 {
                     path: "/registrationmangement/scholarship",
@@ -106,7 +110,7 @@ const router = createRouter({
                             "@/views/office/study-office-management/study-management/scholarship-management/ScholarShipCreation.vue"
                         ),
                 },
-                // Study Year Management
+                // Academic Year Management
                 {
                     path: "/administrationmanagement/structuremanagement/academicyear-list",
                     name: "Study Year",
@@ -118,7 +122,7 @@ const router = createRouter({
 
                 // Degree Management
                 {
-                    path:"/administrationmanagement/structuremanagement/degree-list",
+                    path: "/administrationmanagement/structuremanagement/degree-list",
                     name: "Degree",
                     component: () =>
                         import(
@@ -127,13 +131,22 @@ const router = createRouter({
                 },
                 // Major Management
                 {
-                    path:"/administrationmanagement/structuremanagement/subject-list",
+                    path: "/administrationmanagement/structuremanagement/subject-list",
                     name: "Subject",
                     component: () =>
                         import(
                             "@/views/office/admintstrator-management/structure-management/subject-management/SubjectList.vue"
                         ),
-                }
+                },
+                // Staff Management
+                {
+                    path: "/administrationmanagement/staff-list",
+                    name: "Staff",
+                    component: () =>
+                        import(
+                            "@/views/office/admintstrator-management/staff-management/StaffList.vue"
+                        ),
+                },
             ],
         },
         {
@@ -178,7 +191,7 @@ const router = createRouter({
                             "@/views/office/study-office-management/study-management/scholarship-management/information/ScholarshipEdit.vue"
                         ),
                 },
-            ]
+            ],
         },
         {
             path: "/administratormanagement/structuremanagement/academicyear-information",
@@ -192,9 +205,28 @@ const router = createRouter({
                             "@/views/office/admintstrator-management/structure-management/academic-year-management/academic-year-information/AcademicYearInformation.vue"
                         ),
                 },
-
             ],
         },
+        {
+            path: "/administrationmanagement/staff-information",
+            component: StaffInformationLayout,
+            children: [
+                {
+                    path: "/administrationmanagement/staff-information",
+                    name: "Staff Information",
+                    component: () =>
+                        import(
+                            "@/views/office/admintstrator-management/staff-management/information/StaffInformation.vue"
+                        ),
+                },
+            ],
+        },
+        {
+            path:"/login",
+            name:"Login",
+            component: () => import("@/views/Login.vue"),
+        }
+
     ],
 });
 

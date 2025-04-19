@@ -70,7 +70,7 @@ const onClickShow = (id) => {
             </div>
         </Fluid>
         <div class="card">
-            <Toolbar class="mb-6">
+            <Toolbar class="mb-6" style="border: none !important;">
                 <template #start>
                     <Button label="New" icon="pi pi-plus" class="mr-2" @click="onClickCreate" />
                 </template>

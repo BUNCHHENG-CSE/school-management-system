@@ -156,7 +156,7 @@ const model = ref([
                     },
                     {
                         label: "Staff Management",
-                        to: "",
+                        to: "/administrationmanagement/staff-list",
                     },
                     {
                         label: "Lecturer Management",
